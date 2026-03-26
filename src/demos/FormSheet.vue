@@ -40,7 +40,7 @@ function save() {
           </button>
         </div>
         <DrawerDescription class="sr-only">Sheet content</DrawerDescription>
-        <div class="flex-1 overflow-y-auto p-4 space-y-4" data-vaul-no-drag>
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
           <p class="text-sm text-gray-500">Tap into any input. The keyboard should NOT cover the input field.</p>
 
           <div class="space-y-3">

@@ -59,7 +59,7 @@ function submit() {
           </button>
         </div>
         <DrawerDescription class="sr-only">Sheet content</DrawerDescription>
-        <div class="p-4 space-y-4" data-vaul-no-drag>
+        <div class="p-4 space-y-4">
           <div class="flex gap-1.5 mb-2">
             <div
               v-for="s in 3"

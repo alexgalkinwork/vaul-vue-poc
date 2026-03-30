@@ -3,19 +3,16 @@
     <DrawerPortal>
       <DrawerOverlay class="fixed inset-0 bg-black/40" />
       <DrawerContent
-        class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white max-h-[96dvh]"
-      >
+        class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white max-h-[96dvh]">
         <div
-          class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0"
-        />
+          class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0" />
         <div class="flex items-center justify-between px-4 pt-2 pb-2 shrink-0">
           <DrawerTitle class="text-lg font-semibold">
             Contact Form
           </DrawerTitle>
           <button
             class="h-8 w-8 rounded-full hover:bg-gray-100 active:bg-gray-200 text-gray-500 flex items-center justify-center"
-            @click="open = false"
-          >
+            @click="open = false">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -25,8 +22,7 @@
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+              stroke-linejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
@@ -47,8 +43,7 @@
                 v-model="name"
                 type="text"
                 placeholder="Enter your name"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1"
@@ -58,8 +53,7 @@
                 v-model="email"
                 type="email"
                 placeholder="you@example.com"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1"
@@ -69,16 +63,14 @@
                 v-model="phone"
                 type="tel"
                 placeholder="+49 123 456789"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1"
                 >Delivery Time</label
               >
               <select
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none bg-white"
-              >
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none bg-white">
                 <option value="">Select a time slot</option>
                 <option value="morning">Morning (8-12)</option>
                 <option value="afternoon">Afternoon (12-17)</option>
@@ -93,22 +85,19 @@
                 v-model="notes"
                 rows="3"
                 placeholder="Additional notes..."
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none resize-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none resize-none" />
             </div>
           </div>
 
           <div class="flex gap-3">
             <button
               class="flex-1 rounded-lg border border-gray-300 px-4 py-3 font-medium active:bg-gray-50"
-              @click="open = false"
-            >
+              @click="open = false">
               Cancel
             </button>
             <button
               class="flex-1 rounded-lg bg-blue-600 px-4 py-3 text-white font-medium active:bg-blue-700"
-              @click="save"
-            >
+              @click="save">
               Save
             </button>
           </div>
@@ -119,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 import {
   DrawerRoot,
   DrawerPortal,
@@ -127,25 +116,25 @@ import {
   DrawerContent,
   DrawerTitle,
   DrawerDescription,
-} from "vaul-vue";
+} from 'vaul-vue';
 
 const emit = defineEmits<{ close: [result?: string] }>();
 const open = ref(true);
 
-const name = ref("");
-const email = ref("");
-const phone = ref("");
-const notes = ref("");
+const name = ref('');
+const email = ref('');
+const phone = ref('');
+const notes = ref('');
 
 function onOpenChange(val: boolean) {
-  if (!val) emit("close", "dismiss");
+  if (!val) emit('close', 'dismiss');
   open.value = val;
 }
 
 function save() {
   open.value = false;
   emit(
-    "close",
+    'close',
     `confirm: ${JSON.stringify({ name: name.value, email: email.value, phone: phone.value, notes: notes.value })}`,
   );
 }

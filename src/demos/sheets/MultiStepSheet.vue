@@ -3,16 +3,13 @@
     <DrawerPortal>
       <DrawerOverlay class="fixed inset-0 bg-black/40" />
       <DrawerContent
-        class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white"
-      >
+        class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white">
         <div
-          class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0"
-        />
+          class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0" />
         <div class="flex items-center gap-2 px-4 pt-2 pb-2 shrink-0">
           <button
             class="h-8 w-8 rounded-full hover:bg-gray-100 active:bg-gray-200 text-gray-500 flex items-center justify-center shrink-0"
-            @click="back"
-          >
+            @click="back">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -22,8 +19,7 @@
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+              stroke-linejoin="round">
               <path d="m15 18-6-6 6-6" />
             </svg>
           </button>
@@ -32,8 +28,7 @@
           </DrawerTitle>
           <button
             class="h-8 w-8 rounded-full hover:bg-gray-100 active:bg-gray-200 text-gray-500 flex items-center justify-center shrink-0"
-            @click="open = false"
-          >
+            @click="open = false">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -43,8 +38,7 @@
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+              stroke-linejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
@@ -57,8 +51,7 @@
               v-for="s in 3"
               :key="s"
               class="h-1 flex-1 rounded-full"
-              :class="s <= step ? 'bg-blue-600' : 'bg-gray-200'"
-            />
+              :class="s <= step ? 'bg-blue-600' : 'bg-gray-200'" />
           </div>
 
           <div v-if="step === 1" class="space-y-3">
@@ -71,8 +64,7 @@
                 v-model="name"
                 type="text"
                 placeholder="Your full name"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1"
@@ -82,13 +74,11 @@
                 v-model="email"
                 type="email"
                 placeholder="you@example.com"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <button
               class="w-full rounded-lg bg-blue-600 px-4 py-3 text-white font-medium active:bg-blue-700"
-              @click="next"
-            >
+              @click="next">
               Next
             </button>
           </div>
@@ -103,8 +93,7 @@
                 v-model="address"
                 type="text"
                 placeholder="Musterstraße 42"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1"
@@ -114,13 +103,11 @@
                 v-model="city"
                 type="text"
                 placeholder="Berlin"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
             <button
               class="w-full rounded-lg bg-blue-600 px-4 py-3 text-white font-medium active:bg-blue-700"
-              @click="next"
-            >
+              @click="next">
               Next
             </button>
           </div>
@@ -130,19 +117,18 @@
               Step 3 of 3 — Confirm your details
             </p>
             <div class="rounded-lg bg-gray-50 p-3 space-y-1 text-sm">
-              <p><span class="text-gray-500">Name:</span> {{ name || "—" }}</p>
+              <p><span class="text-gray-500">Name:</span> {{ name || '—' }}</p>
               <p>
-                <span class="text-gray-500">Email:</span> {{ email || "—" }}
+                <span class="text-gray-500">Email:</span> {{ email || '—' }}
               </p>
               <p>
                 <span class="text-gray-500">Address:</span>
-                {{ address || "—" }}, {{ city || "—" }}
+                {{ address || '—' }}, {{ city || '—' }}
               </p>
             </div>
             <button
               class="w-full rounded-lg bg-blue-600 px-4 py-3 text-white font-medium active:bg-blue-700"
-              @click="submit"
-            >
+              @click="submit">
               Submit
             </button>
           </div>
@@ -153,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 import {
   DrawerRoot,
   DrawerPortal,
@@ -161,19 +147,19 @@ import {
   DrawerContent,
   DrawerTitle,
   DrawerDescription,
-} from "vaul-vue";
+} from 'vaul-vue';
 
 const emit = defineEmits<{ close: [result?: string] }>();
 const open = ref(true);
 
 const step = ref(1);
-const name = ref("");
-const email = ref("");
-const address = ref("");
-const city = ref("");
+const name = ref('');
+const email = ref('');
+const address = ref('');
+const city = ref('');
 
 function onOpenChange(val: boolean) {
-  if (!val) emit("close", "dismiss");
+  if (!val) emit('close', 'dismiss');
   open.value = val;
 }
 
@@ -192,7 +178,7 @@ function back() {
 function submit() {
   open.value = false;
   emit(
-    "close",
+    'close',
     `confirm: ${JSON.stringify({ name: name.value, email: email.value, address: address.value, city: city.value })}`,
   );
 }

@@ -1,11 +1,11 @@
-import { ref, readonly } from "vue";
+import { ref, readonly } from 'vue';
 
 export type ToastPosition =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
-export type ToastType = "success" | "error" | "warning" | "info";
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right';
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 export interface ToastAction {
   label: string;
@@ -32,7 +32,7 @@ export interface ToastData {
 }
 
 const DEFAULT_DURATION = 10_000;
-const DEFAULT_POSITION: ToastPosition = "bottom-right";
+const DEFAULT_POSITION: ToastPosition = 'bottom-right';
 
 const toasts = ref<ToastData[]>([]);
 
@@ -72,13 +72,13 @@ export function useToast() {
     toasts: readonly(toasts),
     getByPosition,
     success: (message: string, options?: ToastOptions) =>
-      show("success", message, options),
+      show('success', message, options),
     error: (message: string, options?: ToastOptions) =>
-      show("error", message, options),
+      show('error', message, options),
     warning: (message: string, options?: ToastOptions) =>
-      show("warning", message, options),
+      show('warning', message, options),
     info: (message: string, options?: ToastOptions) =>
-      show("info", message, options),
+      show('info', message, options),
     dismiss,
   };
 }

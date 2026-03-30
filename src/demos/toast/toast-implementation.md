@@ -173,14 +173,13 @@ function handleToastOpenChange(open: boolean, pos: ToastPosition) {
 
 Wir setzen `:open="true"` und kontrollieren den State selbst über unser Array. Wenn Reka UI schließen will (Timer abgelaufen, Swipe, Escape-Taste, Close-Button), feuert es `update:open` mit `false`. `handleToastOpenChange` prüft ob es ein Close ist und ruft dann `dismiss()` auf → Toast wird aus dem Array entfernt → `v-if` rendert nichts mehr.
 
-#### Template-Variable statt Non-Null Assertions
+#### Warum `!` (Non-Null Assertions) im Template?
 
 ```html
-<template v-for="toast in [getByPosition(pos)]" :key="toast?.id">
-  <ToastRoot v-if="toast" :duration="toast.duration" ...>
+<ToastRoot v-if="getByPosition(pos)" :duration="getByPosition(pos)!.duration" ...>
 ```
 
-`getByPosition()` gibt `ToastData | undefined` zurück. Statt überall `!` zu verwenden, packen wir das Ergebnis in ein Ein-Element-Array und iterieren mit `v-for` darüber. Das gibt uns `toast` als Template-Variable. Das darauffolgende `v-if="toast"` narrowt den Typ auf `ToastData` — kein `!` mehr nötig.
+`getByPosition()` gibt `ToastData | undefined` zurück. Innerhalb des `v-if` Blocks wissen wir dass der Wert existiert, aber Vue Templates machen kein TypeScript Type-Narrowing über `v-if`. Daher `!` — "vertrau mir, ist nicht undefined." Die Alternative wäre ein Ein-Element-Array-Hack oder ein Sub-Component mit dem Toast als Prop — beides weniger lesbar für wenig Gewinn.
 
 #### Layering über Modals/Drawers
 

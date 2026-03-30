@@ -3,7 +3,7 @@ import {
   ToastProvider, ToastRoot, ToastTitle, ToastDescription,
   ToastAction, ToastClose, ToastViewport, ToastPortal,
 } from 'reka-ui'
-import { useToast, type ToastPosition } from '../composables/useToast'
+import { useToast, type ToastPosition, type ToastType } from '../composables/useToast'
 
 const { getByPosition, dismiss } = useToast()
 
@@ -16,14 +16,14 @@ const positionClasses: Record<ToastPosition, string> = {
   'bottom-right': 'bottom-4 right-4',
 }
 
-const borderColors: Record<string, string> = {
+const borderColors: Record<ToastType, string> = {
   success: 'border-l-green-500',
   error: 'border-l-red-500',
   warning: 'border-l-yellow-500',
   info: 'border-l-blue-500',
 }
 
-const iconColors: Record<string, string> = {
+const actionColors: Record<ToastType, string> = {
   success: 'text-green-600',
   error: 'text-red-600',
   warning: 'text-yellow-600',
@@ -60,7 +60,7 @@ const iconColors: Record<string, string> = {
         >
           <button
             class="mt-2 text-sm font-medium underline"
-            :class="iconColors[getByPosition(pos)!.type]"
+            :class="actionColors[getByPosition(pos)!.type]"
             @click="getByPosition(pos)!.action!.onClick()"
           >
             {{ getByPosition(pos)!.action!.label }}

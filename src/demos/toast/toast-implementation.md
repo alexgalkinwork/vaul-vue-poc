@@ -2,19 +2,20 @@
 
 ## Übersicht
 
-Toast-System basierend auf Reka UI als Ionic-Ersatz. Besteht aus 3 Dateien:
+Toast-System basierend auf Reka UI als Ionic-Ersatz. Alle Dateien liegen zusammen:
 
 ```
-src/
-  composables/useToast.ts        ← State + API (das was du importierst)
-  components/ToastContainer.vue  ← Rendering (einmal im App-Root mounten)
-  demos/ToastDemo.vue            ← Demo-Page mit allen Test-Cases
+src/demos/toast/
+  useToast.ts              ← State + API (das was du importierst)
+  ToastContainer.vue       ← Rendering (einmal im App-Root mounten)
+  ToastDemo.vue            ← Demo-Page mit allen Test-Cases
+  toast-implementation.md  ← diese Datei
 ```
 
 ## Wie benutzt man es?
 
 ```ts
-import { useToast } from './composables/useToast'
+import { useToast } from './useToast'
 
 const toast = useToast()
 
@@ -158,10 +159,19 @@ ToastProvider (verwaltet Timer, Swipe, A11y)
 #### Kontrollierter State
 
 ```html
-<ToastRoot :open="true" @update:open="(val) => { if (!val) dismiss(pos) }">
+<ToastRoot :open="true" @update:open="(val) => handleToastOpenChange(val, pos)">
 ```
 
-Wir setzen `:open="true"` und kontrollieren den State selbst über unser Array. Wenn Reka UI schließen will (Timer abgelaufen, Swipe, Escape-Taste, Close-Button), feuert es `update:open` mit `false`. Wir rufen dann `dismiss()` auf → Toast wird aus dem Array entfernt → `v-if` rendert nichts mehr.
+```ts
+// Reka UI emits update:open for both open and close. We only care about close
+function handleToastOpenChange(open: boolean, pos: ToastPosition) {
+  if (!open) {
+    dismiss(pos)
+  }
+}
+```
+
+Wir setzen `:open="true"` und kontrollieren den State selbst über unser Array. Wenn Reka UI schließen will (Timer abgelaufen, Swipe, Escape-Taste, Close-Button), feuert es `update:open` mit `false`. `handleToastOpenChange` prüft ob es ein Close ist und ruft dann `dismiss()` auf → Toast wird aus dem Array entfernt → `v-if` rendert nichts mehr.
 
 #### Warum `!` (Non-Null Assertions) im Template?
 
@@ -169,7 +179,7 @@ Wir setzen `:open="true"` und kontrollieren den State selbst über unser Array. 
 <ToastRoot v-if="getByPosition(pos)" :duration="getByPosition(pos)!.duration" ...>
 ```
 
-`getByPosition()` gibt `ToastData | undefined` zurück. Innerhalb des `v-if` Blocks wissen wir dass der Wert existiert, aber Vue Templates machen kein TypeScript Type-Narrowing über `v-if`. Daher brauchen wir `!` um TypeScript zu sagen: "Vertrau mir, ist nicht undefined." Die Alternative wäre ein eigenes Sub-Component mit dem Toast als Prop — aber das macht den Code schwerer nachvollziehbar für wenig Gewinn.
+`getByPosition()` gibt `ToastData | undefined` zurück. Innerhalb des `v-if` Blocks wissen wir dass der Wert existiert, aber Vue Templates machen kein TypeScript Type-Narrowing über `v-if`. Daher `!` — "vertrau mir, ist nicht undefined."
 
 #### Layering über Modals/Drawers
 

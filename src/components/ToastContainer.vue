@@ -15,7 +15,7 @@
       @pointerdown.stop
       @pointerup.stop
       @click.stop
-      @update:open="(val: boolean) => { if (!val) dismiss(pos) }"
+      @update:open="(val: boolean) => handleToastOpenChange(val, pos)"
     >
       <div class="flex-1 min-w-0">
         <ToastTitle
@@ -55,7 +55,10 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-        ><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
       </ToastClose>
     </ToastRoot>
 
@@ -70,33 +73,55 @@
 
 <script setup lang="ts">
 import {
-  ToastProvider, ToastRoot, ToastTitle, ToastDescription,
-  ToastAction, ToastClose, ToastViewport, ToastPortal,
-} from 'reka-ui'
-import { useToast, type ToastPosition, type ToastType } from '../composables/useToast'
+  ToastProvider,
+  ToastRoot,
+  ToastTitle,
+  ToastDescription,
+  ToastAction,
+  ToastClose,
+  ToastViewport,
+  ToastPortal,
+} from "reka-ui";
+import {
+  useToast,
+  type ToastPosition,
+  type ToastType,
+} from "../composables/useToast";
 
-const { getByPosition, dismiss } = useToast()
+const { getByPosition, dismiss } = useToast();
 
-const positions: ToastPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+const positions: ToastPosition[] = [
+  "top-left",
+  "top-right",
+  "bottom-left",
+  "bottom-right",
+];
+
+// Reka UI emits update:open for both open and close. We only care about close
+function handleToastOpenChange(open: boolean, pos: ToastPosition) {
+  if (!open) {
+    dismiss(pos);
+  }
+}
 
 const positionClasses: Record<ToastPosition, string> = {
-  'top-left': 'top-4 left-4',
-  'top-right': 'top-4 right-4',
-  'bottom-left': 'bottom-4 left-4',
-  'bottom-right': 'bottom-4 right-4',
-}
+  "top-left": "top-4 left-4",
+  "top-right": "top-4 right-4",
+  "bottom-left": "bottom-4 left-4",
+  "bottom-right": "bottom-4 right-4",
+};
 
 const borderColors: Record<ToastType, string> = {
-  success: 'border-l-green-500',
-  error: 'border-l-red-500',
-  warning: 'border-l-yellow-500',
-  info: 'border-l-blue-500',
-}
+  success: "border-l-green-500",
+  error: "border-l-red-500",
+  warning: "border-l-yellow-500",
+  info: "border-l-blue-500",
+};
 
 const actionColors: Record<ToastType, string> = {
-  success: 'text-green-600',
-  error: 'text-red-600',
-  warning: 'text-yellow-600',
-  info: 'text-blue-600',
-}
+  success: "text-green-600",
+  error: "text-red-600",
+  warning: "text-yellow-600",
+  info: "text-blue-600",
+};
 </script>

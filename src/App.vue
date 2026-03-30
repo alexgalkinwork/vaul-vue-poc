@@ -6,20 +6,21 @@
         Using vaul-vue from npm — vanilla, no fixes.
       </p>
 
-      <div class="space-y-3">
-        <button
-          v-for="tc in testCases"
-          :key="tc.id"
-          class="w-full text-left rounded-xl border border-gray-200 bg-white p-4 active:bg-gray-50 shadow-sm"
-          @click="activeDemo = tc.id"
-        >
-          <div class="font-medium">
-            {{ tc.label }}
-          </div>
-          <div class="text-sm text-gray-500">
-            {{ tc.desc }}
-          </div>
-        </button>
+      <div v-for="group in demoGroups" :key="group.section" class="mb-6">
+        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+          {{ group.section }}
+        </h3>
+        <div class="space-y-2">
+          <button
+            v-for="tc in group.tests"
+            :key="tc.id"
+            class="w-full text-left rounded-xl border border-gray-200 bg-white p-4 active:bg-gray-50 shadow-sm"
+            @click="activeDemo = tc.id"
+          >
+            <div class="font-medium">{{ tc.label }}</div>
+            <div class="text-sm text-gray-500">{{ tc.desc }}</div>
+          </button>
+        </div>
       </div>
 
       <div v-if="lastResult" class="mt-6 rounded-lg bg-green-50 p-3">
@@ -50,17 +51,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BasicSheet from "./demos/BasicSheet.vue";
-import BreakpointsSheet from "./demos/BreakpointsSheet.vue";
-import FormSheet from "./demos/FormSheet.vue";
-import LongFormSheet from "./demos/LongFormSheet.vue";
-import FitContentSheet from "./demos/FitContentSheet.vue";
-import FullScreenSheet from "./demos/FullScreenSheet.vue";
-import StackedSheetA from "./demos/StackedSheetA.vue";
-import DismissResultSheet from "./demos/DismissResultSheet.vue";
-import MultiStepSheet from "./demos/MultiStepSheet.vue";
-import ToastDemo from "./demos/ToastDemo.vue";
-import ToastContainer from "./components/ToastContainer.vue";
+import BasicSheet from "./demos/sheets/BasicSheet.vue";
+import BreakpointsSheet from "./demos/sheets/BreakpointsSheet.vue";
+import FormSheet from "./demos/sheets/FormSheet.vue";
+import LongFormSheet from "./demos/sheets/LongFormSheet.vue";
+import FitContentSheet from "./demos/sheets/FitContentSheet.vue";
+import FullScreenSheet from "./demos/sheets/FullScreenSheet.vue";
+import StackedSheetA from "./demos/sheets/StackedSheetA.vue";
+import DismissResultSheet from "./demos/sheets/DismissResultSheet.vue";
+import MultiStepSheet from "./demos/sheets/MultiStepSheet.vue";
+import ToastDemo from "./demos/toast/ToastDemo.vue";
+import ToastContainer from "./toast/ToastContainer.vue";
 
 const activeDemo = ref<string | null>(null);
 const lastResult = ref("");
@@ -72,40 +73,26 @@ function handleClose(result?: string) {
   activeDemo.value = null;
 }
 
-const testCases = [
+const demoGroups = [
   {
-    id: "basic",
-    label: "1. Basic Sheet",
-    desc: "Simple content, swipe to dismiss",
+    section: "Sheets (vaul-vue)",
+    tests: [
+      { id: "basic", label: "Basic Sheet", desc: "Simple content, swipe to dismiss" },
+      { id: "breakpoints", label: "Breakpoints", desc: "Snap points at 25%, 50%, 100%" },
+      { id: "form", label: "Form (Keyboard)", desc: "Critical test — inputs + keyboard" },
+      { id: "longform", label: "Long Form", desc: "Scrollable form, 12 fields" },
+      { id: "fitcontent", label: "Fit Content", desc: "Auto-sized to content" },
+      { id: "fullscreen", label: "Full Screen", desc: "Takes entire viewport" },
+      { id: "stacked", label: "Stacked", desc: "Sheet opens another sheet" },
+      { id: "result", label: "Dismiss Result", desc: "Data passed back on dismiss" },
+      { id: "multistep", label: "Multi-Step", desc: "3-step form with back button" },
+    ],
   },
   {
-    id: "breakpoints",
-    label: "2. Breakpoints",
-    desc: "Snap points at 25%, 50%, 100%",
-  },
-  {
-    id: "form",
-    label: "3. Form (Keyboard)",
-    desc: "Critical test — inputs + keyboard",
-  },
-  { id: "longform", label: "4. Long Form", desc: "Scrollable form, 12 fields" },
-  { id: "fitcontent", label: "5. Fit Content", desc: "Auto-sized to content" },
-  { id: "fullscreen", label: "6. Full Screen", desc: "Takes entire viewport" },
-  { id: "stacked", label: "7. Stacked", desc: "Sheet opens another sheet" },
-  {
-    id: "result",
-    label: "8. Dismiss Result",
-    desc: "Data passed back on dismiss",
-  },
-  {
-    id: "multistep",
-    label: "9. Multi-Step",
-    desc: "3-step form with back button",
-  },
-  {
-    id: "toast",
-    label: "10. Toast (Reka UI)",
-    desc: "Toast evaluation — types, positions, layering",
+    section: "Toast (reka-ui)",
+    tests: [
+      { id: "toast", label: "Toast Demo", desc: "Types, positions, layering, actions" },
+    ],
   },
 ];
 </script>

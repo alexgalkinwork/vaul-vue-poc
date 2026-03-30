@@ -99,7 +99,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useToast, type ToastPosition } from "../composables/useToast";
+import { useToast, type ToastPosition } from "../../toast/useToast";
 import {
   DrawerRoot,
   DrawerPortal,

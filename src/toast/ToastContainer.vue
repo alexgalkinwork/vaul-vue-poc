@@ -86,7 +86,7 @@ import {
   useToast,
   type ToastPosition,
   type ToastType,
-} from "../composables/useToast";
+} from "./useToast";
 
 const { getByPosition, dismiss } = useToast();
 

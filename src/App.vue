@@ -9,6 +9,8 @@ import FullScreenSheet from './demos/FullScreenSheet.vue'
 import StackedSheetA from './demos/StackedSheetA.vue'
 import DismissResultSheet from './demos/DismissResultSheet.vue'
 import MultiStepSheet from './demos/MultiStepSheet.vue'
+import ToastDemo from './demos/ToastDemo.vue'
+import ToastContainer from './components/ToastContainer.vue'
 
 const activeDemo = ref<string | null>(null)
 const lastResult = ref('')
@@ -30,6 +32,7 @@ const testCases = [
   { id: 'stacked', label: '7. Stacked', desc: 'Sheet opens another sheet' },
   { id: 'result', label: '8. Dismiss Result', desc: 'Data passed back on dismiss' },
   { id: 'multistep', label: '9. Multi-Step', desc: '3-step form with back button' },
+  { id: 'toast', label: '10. Toast (Reka UI)', desc: 'Toast evaluation — types, positions, layering' },
 ]
 </script>
 
@@ -66,5 +69,8 @@ const testCases = [
     <StackedSheetA v-if="activeDemo === 'stacked'" @close="handleClose" />
     <DismissResultSheet v-if="activeDemo === 'result'" @close="handleClose" />
     <MultiStepSheet v-if="activeDemo === 'multistep'" @close="handleClose" />
+    <ToastDemo v-if="activeDemo === 'toast'" @close="handleClose" />
+
+    <ToastContainer />
   </div>
 </template>

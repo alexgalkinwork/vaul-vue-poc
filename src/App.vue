@@ -284,7 +284,10 @@ const demoGroups = [
           toast.error('Failed to save changes.', {
             action: {
               label: 'Retry',
-              onClick: () => toast.success('Retried successfully!'),
+              onClick: () =>
+                toast.success('Retried successfully!', {
+                  position: 'top-right',
+                }),
             },
             duration: 0,
           }),

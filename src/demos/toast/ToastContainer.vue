@@ -24,17 +24,14 @@
         <ToastDescription
           class="text-sm text-gray-700"
           v-html="getByPosition(pos)!.message" />
-        <ToastAction
+        <button
           v-if="getByPosition(pos)!.action"
-          :alt-text="getByPosition(pos)!.action!.label"
-          as-child>
-          <button
-            class="mt-2 text-sm font-medium underline"
-            :class="actionColors[getByPosition(pos)!.type]"
-            @click="getByPosition(pos)!.action!.onClick()">
-            {{ getByPosition(pos)!.action!.label }}
-          </button>
-        </ToastAction>
+          class="mt-2 text-sm font-medium underline"
+          :class="actionColors[getByPosition(pos)!.type]"
+          :aria-label="getByPosition(pos)!.action!.label"
+          @click="handleAction(pos)">
+          {{ getByPosition(pos)!.action!.label }}
+        </button>
       </div>
       <ToastClose
         class="shrink-0 h-6 w-6 rounded hover:bg-gray-100 active:bg-gray-200 text-gray-400 hover:text-gray-600 flex items-center justify-center">
@@ -68,7 +65,6 @@ import {
   ToastRoot,
   ToastTitle,
   ToastDescription,
-  ToastAction,
   ToastClose,
   ToastViewport,
   ToastPortal,
@@ -87,6 +83,14 @@ const positions: ToastPosition[] = [
 // Reka UI emits update:open for both open and close. We only care about close
 function handleToastOpenChange(open: boolean, pos: ToastPosition) {
   if (!open) {
+    dismiss(pos);
+  }
+}
+
+function handleAction(pos: ToastPosition) {
+  const action = getByPosition(pos)?.action;
+  if (action) {
+    action.onClick();
     dismiss(pos);
   }
 }

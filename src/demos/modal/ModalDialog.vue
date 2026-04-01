@@ -15,9 +15,9 @@
           instance.options.autoHeight ? 'max-h-dvh' : 'max-h-[85vh]'
         ]"
         :style="{ zIndex: zIndex + 1 }"
-        @escape-key-down="(e: KeyboardEvent) => tryDismiss(e, 'escape')"
-        @pointer-down-outside="handlePointerDownOutside"
-        @interact-outside="(e: any) => e.preventDefault()"
+        @escape-key-down.prevent="tryDismiss('escape')"
+        @pointer-down-outside.prevent="tryDismiss('backdrop')"
+        @interact-outside.prevent
         @open-auto-focus="() => instance.options.onPresent?.()">
         <DialogTitle class="sr-only">Modal</DialogTitle>
         <DialogDescription class="sr-only">Modal content</DialogDescription>
@@ -62,27 +62,9 @@
     large: 'w-[1140px]'
   } satisfies Record<ModalSize, string>;
 
-  function tryDismiss(event: Event, reason: DismissReason) {
-    event.preventDefault();
+  function tryDismiss(reason: DismissReason) {
     if (checkCanDismiss(instance, reason)) {
       dismissInstance(instance, null, reason);
-    }
-  }
-
-  function handlePointerDownOutside(event: any) {
-    event.preventDefault();
-    const orig = event.detail?.originalEvent as PointerEvent | undefined;
-    if (orig) {
-      const target = orig.target as HTMLElement;
-      if (
-        orig.offsetX > target.clientWidth ||
-        orig.offsetY > target.clientHeight
-      ) {
-        return;
-      }
-    }
-    if (checkCanDismiss(instance, 'backdrop')) {
-      dismissInstance(instance, null, 'backdrop');
     }
   }
 </script>

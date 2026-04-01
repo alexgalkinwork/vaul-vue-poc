@@ -2,7 +2,6 @@
   <button
     v-if="showClose"
     class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 active:bg-gray-200"
-    :class="$attrs.class"
     @click="dismiss(null, 'close-button')">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,8 +22,6 @@
 <script setup lang="ts">
   import { computed, inject } from 'vue';
   import { MODAL_DISMISSIBLE_KEY, dismiss } from './useModal';
-
-  defineOptions({ inheritAttrs: false });
 
   const dismissible = inject(MODAL_DISMISSIBLE_KEY, true);
   const showClose = computed(() => dismissible !== false);

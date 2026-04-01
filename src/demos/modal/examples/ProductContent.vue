@@ -2,7 +2,7 @@
   <div class="flex flex-1 flex-col overflow-hidden">
     <div class="relative shrink-0">
       <img
-        src="https://picsum.photos/seed/product/800/400"
+        src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&h=400&fit=crop"
         alt="Produkt"
         class="h-48 w-full object-cover" />
       <ModalClose class="absolute top-3 right-3 bg-white/80 text-gray-700 backdrop-blur-sm hover:bg-white" />

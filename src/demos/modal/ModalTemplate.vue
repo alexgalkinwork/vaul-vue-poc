@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-1 flex-col overflow-hidden">
     <div
-      class="flex shrink-0 items-start border-b border-transparent px-4 pt-3 pb-2 transition-colors duration-150"
-      :class="{ 'border-gray-200': isScrolled }">
+      class="flex shrink-0 items-start px-4 pt-3 pb-2 transition-shadow duration-150"
+      :class="isScrolled ? 'shadow-md' : ''">
       <div class="min-w-0 flex-1">
         <slot name="header" />
       </div>
@@ -18,8 +18,8 @@
 
     <div
       v-if="$slots.footer"
-      class="shrink-0 border-t border-transparent transition-colors duration-150"
-      :class="{ 'border-gray-200': !isAtBottom }">
+      class="shrink-0 transition-shadow duration-150"
+      :class="!isAtBottom ? 'shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]' : ''">
       <slot name="footer" />
     </div>
   </div>

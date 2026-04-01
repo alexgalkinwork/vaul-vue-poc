@@ -31,7 +31,7 @@
       <div class="mb-6">
         <h3
           class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
-          DatePicker (reka-ui)
+          DatePicker
         </h3>
         <DatePickerDemo />
       </div>
@@ -127,15 +127,15 @@
   import BasicContent from './demos/modal/examples/BasicContent.vue';
   import ConfirmContent from './demos/modal/examples/ConfirmContent.vue';
   import FormContent from './demos/modal/examples/FormContent.vue';
+  import LongFormContent from './demos/modal/examples/LongFormContent.vue';
   import MultiStepContent from './demos/modal/examples/MultiStepContent.vue';
   import NestedContent from './demos/modal/examples/NestedContent.vue';
+  import ProductContent from './demos/modal/examples/ProductContent.vue';
   import ScrollContent from './demos/modal/examples/ScrollContent.vue';
+  import TimeslotContent from './demos/modal/examples/TimeslotContent.vue';
   import UndismissableContent from './demos/modal/examples/UndismissableContent.vue';
   import ResponsiveModal from './demos/modal/ResponsiveModal.vue';
   import { showModal, type ModalSize } from './demos/modal/useModal';
-  import LongFormContent from './demos/modal/examples/LongFormContent.vue';
-  import ProductContent from './demos/modal/examples/ProductContent.vue';
-  import TimeslotContent from './demos/modal/examples/TimeslotContent.vue';
   import ToastContainer from './demos/toast/ToastContainer.vue';
   import { useToast, type ToastPosition } from './demos/toast/useToast';
 
@@ -173,7 +173,7 @@
       tests: (['small', 'medium', 'large'] satisfies ModalSize[]).map(size => ({
         id: `m-size-${size}`,
         label: `${size} (${{ small: '438px', medium: '672px', large: '1140px' }[size]})`,
-        desc: `Modal with size="${size}" — sheet on mobile, dialog on desktop`,
+        desc: `${{ small: 'Login, Bestätigung, kleine Dialoge', medium: 'Formulare, CMS-Inhalte, Standard', large: 'Karten, große Tabellen, Produktübersichten' }[size]} — auf Mobile automatisch als Sheet`,
         fn: () =>
           openModal(
             {
@@ -193,7 +193,7 @@
         {
           id: 'm-persistent',
           label: 'Persistent',
-          desc: 'No backdrop/swipe/handle — close button + escape work',
+          desc: 'Für Formulare: versehentliches Schließen per Swipe/Backdrop verhindert. Close-Button + Escape gehen weiterhin.',
           fn: () =>
             openModal(
               {
@@ -207,7 +207,7 @@
         {
           id: 'm-locked',
           label: 'Locked (undismissable)',
-          desc: 'No close button, no escape, no backdrop, no swipe — auto-closes after 3s',
+          desc: 'Für Ladezustände/Zahlungen: kein Schließen möglich, kein Close-Button. Schließt automatisch nach 3s (simuliert API-Call).',
           fn: () =>
             openModal(
               {
@@ -221,7 +221,7 @@
         {
           id: 'm-custom-candismiss',
           label: 'Custom canDismiss',
-          desc: 'canDismiss blocks escape only, rest allowed',
+          desc: 'Für Sonderfälle: eigene Logik welche Dismiss-Methoden erlaubt sind. Hier: Escape blockiert, Rest geht.',
           fn: () =>
             openModal(
               {
@@ -240,15 +240,22 @@
       tests: [
         {
           id: 'm-form-result',
-          label: 'Form with Result',
-          desc: 'Submit returns data, cancel returns null',
+          label: 'Formular mit Rückgabewert',
+          desc: 'Wie Adressformular: Speichern gibt Daten zurück, Abbrechen gibt null. Backdrop/Swipe blockiert bei ungespeicherten Änderungen.',
           fn: () =>
-            openModal({ component: FormContent, size: 'medium' }, 'Form')
+            openModal(
+              {
+                component: FormContent,
+                size: 'medium',
+                dismissible: 'persistent'
+              },
+              'Form'
+            )
         },
         {
           id: 'm-scroll',
-          label: 'Scrollable Content',
-          desc: 'Header/footer shadows on scroll',
+          label: 'Scrollbarer Inhalt (AGB)',
+          desc: 'Wie AGB/Datenschutz: langer Text mit Scroll-Indikatoren an Header und Footer. Zeigt ob noch mehr Content da ist.',
           fn: () =>
             openModal(
               { component: ScrollContent, size: 'medium' },
@@ -257,8 +264,8 @@
         },
         {
           id: 'm-multistep',
-          label: 'Multi-Step Form',
-          desc: '3-step wizard with back button',
+          label: 'Multi-Step Formular',
+          desc: 'Wie Registrierung/Onboarding: 3 Schritte mit Fortschrittsbalken und Zurück-Button. Swipe blockiert damit kein Schritt verloren geht.',
           fn: () =>
             openModal(
               {
@@ -271,8 +278,8 @@
         },
         {
           id: 'm-nested',
-          label: 'Nested Modals',
-          desc: 'Modal opens modal — test stacking + dismissAll',
+          label: 'Verschachtelte Modals',
+          desc: 'Wie Adressbuch → Adresse bearbeiten: Modal öffnet weiteres Modal. Verschiedene Größen, "Alle schließen" Button. Backdrop wird nicht dunkler.',
           fn: () =>
             openModal(
               {
@@ -286,7 +293,7 @@
         {
           id: 'm-lifecycle',
           label: 'Lifecycle Callbacks',
-          desc: 'onPresent, onWillDismiss, onDidDismiss — check console + log',
+          desc: 'Für Tracking/Analytics: Events bei Modal-Open und -Close. Prüfe Console und Log unten.',
           fn: () =>
             openModal(
               {
@@ -312,7 +319,7 @@
         {
           id: 'm-auto-height',
           label: 'Auto Height (Confirm Dialog)',
-          desc: 'Small confirm dialog — height fits content',
+          desc: 'Für Bestätigungen: Modal ist nur so hoch wie der Inhalt, kein leerer Platz. Wie "Bestellung stornieren?" Dialog.',
           fn: () =>
             openModal(
               {
@@ -331,19 +338,15 @@
         },
         {
           id: 'm-toast-over-modal',
-          label: 'Toast Over Modal',
-          desc: 'Opens modal, then fires toast — toast should be on top',
+          label: 'Toast über Modal',
+          desc: 'Toast muss über dem Modal sichtbar sein — z.B. Fehlermeldung während ein Formular offen ist.',
           fn: () => {
             showModal({
               component: BasicContent,
               componentProps: { title: 'Modal (toast should be above me)' },
               size: 'medium'
             });
-            setTimeout(
-              () =>
-                toast.success('I am above the modal!'),
-              500
-            );
+            setTimeout(() => toast.success('I am above the modal!'), 500);
           }
         }
       ]
@@ -354,7 +357,7 @@
         {
           id: 'm-longform',
           label: 'Langes Formular (12 Felder)',
-          desc: 'Scroll + Keyboard bei vielen Inputs',
+          desc: 'Wie Registrierung mit vielen Feldern: testet Scroll-Verhalten und ob Keyboard das aktive Feld nicht verdeckt.',
           fn: () =>
             openModal(
               {
@@ -367,8 +370,8 @@
         },
         {
           id: 'm-fit-content',
-          label: 'Auto Height (kurzer Inhalt)',
-          desc: 'Modal passt sich der Content-Höhe an',
+          label: 'Stornierung (Auto Height)',
+          desc: 'Wie "Bestellung stornieren?": kleiner Dialog der sich der Content-Höhe anpasst statt den ganzen Bildschirm zu nehmen.',
           fn: () =>
             openModal(
               {
@@ -388,17 +391,14 @@
         {
           id: 'm-product',
           label: 'Produkt-Quickview',
-          desc: 'Custom Header (Bild), Custom Footer (Menge + Warenkorb)',
+          desc: 'Wie Produktdetail-Popup: Bild oben (kein Standard-Header), Mengenauswahl + Warenkorb-Button unten. Komplett eigenes Layout.',
           fn: () =>
-            openModal(
-              { component: ProductContent, size: 'small' },
-              'Product'
-            )
+            openModal({ component: ProductContent, size: 'small' }, 'Product')
         },
         {
           id: 'm-timeslot',
           label: 'Lieferzeit wählen',
-          desc: 'Custom Header (Titel + Datum), Slot-Auswahl, Footer-Button',
+          desc: 'Wie Zeitfenster-Auswahl: Custom Header mit Datum, wählbare Zeitslots mit Preisen/Verfügbarkeit, Bestätigung im Footer.',
           fn: () =>
             openModal(
               {

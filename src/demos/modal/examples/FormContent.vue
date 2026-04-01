@@ -6,9 +6,17 @@
 
     <div class="space-y-3 p-4">
       <p class="text-sm text-gray-500">
-        Formular ausfüllen und absenden. Bei "persistent" Modus sind Swipe und
-        Backdrop blockiert — nur Close-Button und Escape funktionieren.
+        Formular ausfüllen und absenden. "Speichern" gibt die Daten zurück,
+        "Abbrechen" gibt null zurück.
       </p>
+
+      <div
+        v-if="isDirty"
+        class="rounded-lg bg-amber-50 p-2">
+        <p class="text-xs text-amber-700">
+          Ungespeicherte Änderungen vorhanden.
+        </p>
+      </div>
 
       <div>
         <label class="mb-1 block text-sm font-medium text-gray-700">Name</label>
@@ -43,13 +51,6 @@
           class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
       </div>
 
-      <div
-        v-if="isDirty"
-        class="rounded-lg bg-amber-50 p-2">
-        <p class="text-xs text-amber-700">
-          Ungespeicherte Änderungen — Backdrop/Swipe ist blockiert.
-        </p>
-      </div>
     </div>
 
     <template #footer>
@@ -85,10 +86,12 @@
   const isValid = computed(() => name.value.trim() && email.value.trim());
   const isDirty = computed(
     () =>
-      name.value.trim() ||
-      email.value.trim() ||
-      phone.value.trim() ||
-      message.value.trim()
+      !!(
+        name.value.trim() ||
+        email.value.trim() ||
+        phone.value.trim() ||
+        message.value.trim()
+      )
   );
 
   function submit() {

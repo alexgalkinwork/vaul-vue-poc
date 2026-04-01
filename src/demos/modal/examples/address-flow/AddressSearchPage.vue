@@ -20,6 +20,12 @@
       class="text-center text-sm text-gray-400">
       Keine Ergebnisse für "{{ query }}"
     </p>
+
+    <button
+      class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 active:bg-gray-50"
+      @click="nav.push(AddressMapPage, { title: 'Auf Karte wählen' })">
+      Adresse nicht gefunden? Auf Karte wählen
+    </button>
   </div>
 </template>
 
@@ -27,6 +33,7 @@
   import { computed, inject, ref } from 'vue';
   import { useNavStack } from '../../useNavStack';
   import { ADDRESS_KEY } from './addressState';
+  import AddressMapPage from './AddressMapPage.vue';
 
   const nav = useNavStack();
   const address = inject(ADDRESS_KEY)!;
@@ -52,6 +59,6 @@
 
   function selectAddress(addr: (typeof addresses)[number]) {
     address.value = { street: addr.street, city: addr.city };
-    nav.pop();
+    nav.popToRoot();
   }
 </script>

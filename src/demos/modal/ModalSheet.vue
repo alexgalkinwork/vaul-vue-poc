@@ -37,7 +37,7 @@
     DrawerPortal,
     DrawerRoot,
     DrawerTitle
-  } from 'vaul-vue';
+  } from '../../lib/vaul-vue';
   import {
     MODAL_DISMISSIBLE_KEY,
     checkCanDismiss,

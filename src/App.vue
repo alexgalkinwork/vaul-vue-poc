@@ -148,7 +148,7 @@
     DrawerPortal,
     DrawerRoot,
     DrawerTitle
-  } from 'vaul-vue';
+  } from './lib/vaul-vue';
   import { ref } from 'vue';
   import DatePickerDemo from './demos/datepicker/DatePickerDemo.vue';
   import BasicContent from './demos/modal/examples/BasicContent.vue';

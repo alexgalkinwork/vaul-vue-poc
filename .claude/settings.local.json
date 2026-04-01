@@ -12,7 +12,17 @@
       "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''path'''']\\) for item in data.get\\(''''items'''',[]\\)]\")",
       "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app -name index.html -o -name *.html)",
       "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp -name tailwind.config.* -o -name index.html)",
-      "Bash(grep -r \"addEventListener.*gesture\\\\|addEventListener.*touchstart\\\\|addEventListener.*wheel\\\\|addEventListener.*dblclick\" /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp/src --include=*.ts --include=*.js --include=*.vue)"
+      "Bash(grep -r \"addEventListener.*gesture\\\\|addEventListener.*touchstart\\\\|addEventListener.*wheel\\\\|addEventListener.*dblclick\" /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp/src --include=*.ts --include=*.js --include=*.vue)",
+      "Bash(npm show:*)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/unovue/vaul-vue/main/packages/vaul-vue/src/usePositionFixed.ts\")",
+      "Bash(mkdir -p /Users/alexgalkin/pocs/vaul-vue-poc/src/demos/modal/vaul-vue-src)",
+      "Bash(for f:*)",
+      "Bash(do curl:*)",
+      "Bash(echo \"OK: $f\")",
+      "Bash(echo \"FAIL: $f\")",
+      "Bash(done)",
+      "Bash(wc -l /Users/alexgalkin/pocs/vaul-vue-poc/src/demos/modal/vaul-vue-src/*)",
+      "Bash(do sed:*)"
     ]
   }
 }

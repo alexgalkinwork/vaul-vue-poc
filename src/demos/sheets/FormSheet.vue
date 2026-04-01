@@ -117,7 +117,7 @@
     DrawerPortal,
     DrawerRoot,
     DrawerTitle
-  } from 'vaul-vue';
+  } from '../../lib/vaul-vue';
   import { ref } from 'vue';
 
   const emit = defineEmits<{ close: [result?: string] }>();

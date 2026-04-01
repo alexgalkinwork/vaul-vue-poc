@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+body:has([data-vaul-drawer]) [vaul-drawer-wrapper] {
+  overflow: hidden !important;
+}
+
+[data-vaul-drawer] {
+  box-shadow: 0 10px 0 10px white;
+}

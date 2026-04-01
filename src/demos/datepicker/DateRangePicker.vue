@@ -8,7 +8,6 @@
     :is-date-disabled="isDateDisabled"
     :is-date-unavailable="isDateUnavailable"
     :disabled="disabled"
-    :readonly="readonly"
     :number-of-months="numberOfMonths"
     :close-on-select="true">
     <DateRangePickerField
@@ -81,7 +80,10 @@
 
     <DateRangePickerContent
       :side-offset="4"
-      class="z-50 rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
+      :avoid-collisions="true"
+      :collision-padding="8"
+      align="center"
+      class="z-50 max-w-[calc(100vw-1rem)] rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
       <DateRangePickerCalendar
         v-slot="{ weekDays, grid }"
         class="select-none">
@@ -115,7 +117,7 @@
           </DateRangePickerNext>
         </DateRangePickerHeader>
 
-        <div class="flex gap-4">
+        <div class="flex flex-col gap-4 sm:flex-row">
           <DateRangePickerGrid
             v-for="month in grid"
             :key="month.value.toString()"
@@ -182,8 +184,7 @@
     locale = 'de-DE',
     weekStartsOn = 1,
     numberOfMonths = 2,
-    disabled = false,
-    readonly: isReadonly = false
+    disabled = false
   } = defineProps<{
     locale?: string;
     weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -193,6 +194,5 @@
     isDateDisabled?: (date: DateValue) => boolean;
     isDateUnavailable?: (date: DateValue) => boolean;
     disabled?: boolean;
-    readonly?: boolean;
   }>();
 </script>

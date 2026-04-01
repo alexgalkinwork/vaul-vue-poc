@@ -9,7 +9,10 @@
       "Bash(gh api:*)",
       "Bash(curl -sL \"https://raw.githubusercontent.com/unovue/reka-ui/refs/heads/main/docs/.vitepress/theme/components/demo/DatePicker/tailwind/index.vue\")",
       "Bash(curl -sL \"https://api.github.com/search/code?q=DatePickerCellTrigger+repo:unovue/reka-ui+extension:vue&per_page=5\")",
-      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''path'''']\\) for item in data.get\\(''''items'''',[]\\)]\")"
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''path'''']\\) for item in data.get\\(''''items'''',[]\\)]\")",
+      "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app -name index.html -o -name *.html)",
+      "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp -name tailwind.config.* -o -name index.html)",
+      "Bash(grep -r \"addEventListener.*gesture\\\\|addEventListener.*touchstart\\\\|addEventListener.*wheel\\\\|addEventListener.*dblclick\" /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp/src --include=*.ts --include=*.js --include=*.vue)"
     ]
   }
 }

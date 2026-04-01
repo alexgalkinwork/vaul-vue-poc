@@ -60,7 +60,10 @@
 
     <DatePickerContent
       :side-offset="4"
-      class="z-50 rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
+      :avoid-collisions="true"
+      :collision-padding="8"
+      align="center"
+      class="z-50 max-w-[calc(100vw-1rem)] rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
       <DatePickerCalendar
         v-slot="{ weekDays, grid }"
         class="select-none">
@@ -204,7 +207,9 @@
     disabled?: boolean;
   }>();
 
-  const placeholder = ref<RekaDateValue>(today(getLocalTimeZone()) as RekaDateValue);
+  const placeholder = ref<RekaDateValue>(
+    today(getLocalTimeZone()) as RekaDateValue
+  );
 
   const monthNames = computed(() => {
     const df = new DateFormatter(locale, { month: 'long' });

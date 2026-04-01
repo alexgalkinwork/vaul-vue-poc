@@ -1,7 +1,7 @@
 <template>
   <div
     vaul-drawer-wrapper
-    class="min-h-dvh bg-gray-50">
+    class="min-h-dvh touch-manipulation bg-gray-50 select-none">
     <div class="mx-auto max-w-2xl p-4 pb-8">
       <h1 class="mb-1 text-2xl font-bold">Reka UI Component POC</h1>
       <p class="mb-8 text-sm text-gray-500">
@@ -188,7 +188,7 @@
   const modalGroups = [
     {
       section: 'Größen',
-      grid: 'grid-cols-3',
+      grid: 'sm:grid-cols-3',
       tests: (['small', 'medium', 'large'] satisfies ModalSize[]).map(size => ({
         id: `m-size-${size}`,
         label: `${size} (${{ small: '438px', medium: '672px', large: '1140px' }[size]})`,

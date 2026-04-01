@@ -12,7 +12,7 @@
     :close-on-select="true">
     <DateRangePickerField
       v-slot="{ segments }"
-      class="flex items-center rounded-lg border border-gray-300 px-3 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+      class="inline-flex w-auto items-center rounded-lg border border-gray-300 px-3 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
       :class="{ 'opacity-50': disabled }">
       <div class="flex items-center">
         <template

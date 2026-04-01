@@ -13,9 +13,9 @@
     @update:placeholder="(d: RekaDateValue) => (placeholder = d)">
     <DatePickerField
       v-slot="{ segments }"
-      class="flex items-center rounded-lg border border-gray-300 px-3 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+      class="inline-flex w-auto items-center rounded-lg border border-gray-300 px-3 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
       :class="{ 'opacity-50': disabled }">
-      <div class="flex items-center">
+      <div class="flex flex-1 items-center">
         <template
           v-for="item in segments"
           :key="item.part">
@@ -28,13 +28,13 @@
           <DatePickerInput
             v-else
             :part="item.part"
-            class="rounded-sm text-center text-sm tabular-nums focus:bg-blue-100 focus:outline-none data-placeholder:text-gray-400">
+            class="rounded-sm px-0.5 text-center text-sm tabular-nums focus:bg-blue-100 focus:outline-none data-placeholder:text-gray-400">
             {{ item.value }}
           </DatePickerInput>
         </template>
       </div>
       <DatePickerTrigger
-        class="ml-auto flex h-7 w-7 shrink-0 cursor-default items-center justify-center rounded-md text-gray-500 hover:bg-gray-100">
+        class="ml-2 flex h-7 w-7 shrink-0 cursor-default items-center justify-center rounded-md text-gray-500 hover:bg-gray-100">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

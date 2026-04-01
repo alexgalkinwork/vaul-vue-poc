@@ -1,95 +1,69 @@
 <template>
-  <div class="space-y-8">
-    <section>
-      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-        Einzelnes Datum
-      </h3>
-      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <label class="mb-2 block text-sm font-medium text-gray-700">
-          Lieferdatum wählen
-        </label>
-        <DatePicker v-model="singleDate" />
-        <p
-          v-if="singleDate"
-          class="mt-2 text-sm text-gray-600">
-          Gewählt: {{ formatDate(singleDate) }}
-        </p>
-      </div>
-    </section>
+  <div class="space-y-4">
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
+        Lieferdatum
+      </label>
+      <DatePicker v-model="singleDate" />
+      <p
+        v-if="singleDate"
+        class="mt-2 text-xs text-gray-500">
+        {{ formatDate(singleDate) }}
+      </p>
+    </div>
 
-    <section>
-      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-        Mit Einschränkungen
-      </h3>
-      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <label class="mb-2 block text-sm font-medium text-gray-700">
-          Termin wählen (nur Werktage, nächste 30 Tage)
-        </label>
-        <DatePicker
-          v-model="constrainedDate"
-          :min-value="todayDate"
-          :max-value="maxDate"
-          :is-date-disabled="isWeekend" />
-        <p
-          v-if="constrainedDate"
-          class="mt-2 text-sm text-gray-600">
-          Gewählt: {{ formatDate(constrainedDate) }}
-        </p>
-      </div>
-    </section>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
+        Termin (nur Werktage, nächste 30 Tage)
+      </label>
+      <DatePicker
+        v-model="constrainedDate"
+        :min-value="todayDate"
+        :max-value="maxDate"
+        :is-date-disabled="isWeekend" />
+      <p
+        v-if="constrainedDate"
+        class="mt-2 text-xs text-gray-500">
+        {{ formatDate(constrainedDate) }}
+      </p>
+    </div>
 
-    <section>
-      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-        Zeitraum
-      </h3>
-      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <label class="mb-2 block text-sm font-medium text-gray-700">
-          Urlaubszeitraum wählen
-        </label>
-        <DateRangePicker v-model="rangeValue" />
-        <p
-          v-if="rangeValue?.start && rangeValue?.end"
-          class="mt-2 text-sm text-gray-600">
-          Zeitraum: {{ formatDate(rangeValue.start) }} –
-          {{ formatDate(rangeValue.end) }}
-        </p>
-      </div>
-    </section>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
+        Urlaubszeitraum
+      </label>
+      <DateRangePicker v-model="rangeValue" />
+      <p
+        v-if="rangeValue?.start && rangeValue?.end"
+        class="mt-2 text-xs text-gray-500">
+        {{ formatDate(rangeValue.start) }} – {{ formatDate(rangeValue.end) }}
+      </p>
+    </div>
 
-    <section>
-      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-        Zeitraum mit Einschränkungen
-      </h3>
-      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <label class="mb-2 block text-sm font-medium text-gray-700">
-          Buchungszeitraum (nur Werktage, max 14 Tage, ab heute)
-        </label>
-        <DateRangePicker
-          v-model="constrainedRange"
-          :min-value="todayDate"
-          :is-date-disabled="isWeekend" />
-        <p
-          v-if="constrainedRange?.start && constrainedRange?.end"
-          class="mt-2 text-sm text-gray-600">
-          Zeitraum: {{ formatDate(constrainedRange.start) }} –
-          {{ formatDate(constrainedRange.end) }}
-        </p>
-      </div>
-    </section>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
+        Buchungszeitraum (nur Werktage, ab heute)
+      </label>
+      <DateRangePicker
+        v-model="constrainedRange"
+        :min-value="todayDate"
+        :is-date-disabled="isWeekend" />
+      <p
+        v-if="constrainedRange?.start && constrainedRange?.end"
+        class="mt-2 text-xs text-gray-500">
+        {{ formatDate(constrainedRange.start) }} –
+        {{ formatDate(constrainedRange.end) }}
+      </p>
+    </div>
 
-    <section>
-      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
         Deaktiviert
-      </h3>
-      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <label class="mb-2 block text-sm font-medium text-gray-700">
-          Nicht editierbar
-        </label>
-        <DatePicker
-          v-model="disabledDate"
-          disabled />
-      </div>
-    </section>
+      </label>
+      <DatePicker
+        v-model="disabledDate"
+        disabled />
+    </div>
   </div>
 </template>
 

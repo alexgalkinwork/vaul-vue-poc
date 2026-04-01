@@ -1,5 +1,7 @@
 <template>
-  <template v-for="(instance, index) in modalStack" :key="instance.id">
+  <template
+    v-for="(instance, index) in modalStack"
+    :key="instance.id">
     <!-- Desktop: Reka UI Dialog -->
     <DialogRoot
       v-if="instance.isDesktop"
@@ -9,34 +11,30 @@
         (val: boolean) => {
           if (!val) handleDialogDismiss(instance);
         }
-      "
-    >
+      ">
       <DialogPortal>
         <DialogOverlay
           class="fixed inset-0"
           :class="index === 0 ? 'bg-black/30' : ''"
-          :style="{ zIndex: 100 + index * 10 }"
-        />
+          :style="{ zIndex: 100 + index * 10 }" />
         <DialogContent
-          class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl flex flex-col"
+          class="fixed top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-white"
           :class="[
             sizeClasses[instance.options.size ?? 'medium'],
             index > 0 ? 'shadow-[0_28px_48px_rgba(0,0,0,0.4)]' : 'shadow-xl',
-            instance.options.autoHeight ? 'max-h-dvh' : 'max-h-[85vh]',
+            instance.options.autoHeight ? 'max-h-dvh' : 'max-h-[85vh]'
           ]"
           :style="{ zIndex: 101 + index * 10 }"
           @escape-key-down="() => setDialogDismissReason('escape')"
-          @pointer-down-outside="
-            (event: any) => handlePointerDownOutside(event)
-          "
-          @open-auto-focus="() => instance.options.onPresent?.()"
-        >
+          @pointer-down-outside="handlePointerDownOutside"
+          @open-auto-focus="() => instance.options.onPresent?.()">
           <DialogTitle class="sr-only">Modal</DialogTitle>
           <DialogDescription class="sr-only">Modal content</DialogDescription>
-          <component
-            :is="instance.options.component"
-            v-bind="instance.options.componentProps ?? {}"
-          />
+          <ModalDismissibleProvider :dismissible="instance.options.dismissible ?? true">
+            <component
+              :is="instance.options.component"
+              v-bind="instance.options.componentProps ?? {}" />
+          </ModalDismissibleProvider>
         </DialogContent>
       </DialogPortal>
     </DialogRoot>
@@ -45,7 +43,7 @@
     <DrawerRoot
       v-else
       :open="true"
-      :dismissible="!instance.options.preventSwipeDismiss && instance.options.showHandle !== false"
+      :dismissible="isDismissibleSwipe(instance)"
       @update:open="
         (val: boolean) => {
           if (!val) handleSheetDismiss(instance);
@@ -55,31 +53,28 @@
         (open: boolean) => {
           if (open) instance.options.onPresent?.();
         }
-      "
-    >
+      ">
       <DrawerPortal>
         <DrawerOverlay
           class="fixed inset-0"
           :class="index === 0 ? 'bg-black/30' : ''"
           :style="{ zIndex: 100 + index * 10 }"
-          @pointerdown="() => setSheetDismissReason('backdrop')"
-        />
+          @pointerdown="() => setSheetDismissReason('backdrop')" />
         <DrawerContent
-          class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white"
+          class="fixed right-0 bottom-0 left-0 flex flex-col rounded-t-2xl bg-white"
           :class="instance.options.autoHeight ? '' : 'max-h-[96dvh]'"
           :style="{ zIndex: 101 + index * 10 }"
-          @keydown.escape="() => setSheetDismissReason('escape')"
-        >
+          @keydown.escape="() => setSheetDismissReason('escape')">
           <DrawerTitle class="sr-only">Modal</DrawerTitle>
           <DrawerDescription class="sr-only">Modal content</DrawerDescription>
           <div
-            v-if="instance.options.showHandle !== false"
-            class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0"
-          />
-          <component
-            :is="instance.options.component"
-            v-bind="instance.options.componentProps ?? {}"
-          />
+            v-if="showHandle(instance)"
+            class="mx-auto mt-2 mb-1 h-1.5 w-12 shrink-0 rounded-full bg-gray-300" />
+          <ModalDismissibleProvider :dismissible="instance.options.dismissible ?? true">
+            <component
+              :is="instance.options.component"
+              v-bind="instance.options.componentProps ?? {}" />
+          </ModalDismissibleProvider>
         </DrawerContent>
       </DrawerPortal>
     </DrawerRoot>
@@ -87,86 +82,111 @@
 </template>
 
 <script setup lang="ts">
-import {
-  DialogRoot,
-  DialogPortal,
-  DialogOverlay,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "reka-ui";
-import {
-  DrawerRoot,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerTitle,
-  DrawerDescription,
-} from "vaul-vue";
-import {
-  useModal,
-  checkCanDismiss,
-  dismissInstance,
-  type ModalInstance,
-  type ModalSize,
-  type DismissReason,
-} from "./useModal";
+  import { defineComponent, provide } from 'vue';
+  import {
+    DialogContent,
+    DialogDescription,
+    DialogOverlay,
+    DialogPortal,
+    DialogRoot,
+    DialogTitle
+  } from 'reka-ui';
+  import {
+    DrawerContent,
+    DrawerDescription,
+    DrawerOverlay,
+    DrawerPortal,
+    DrawerRoot,
+    DrawerTitle
+  } from 'vaul-vue';
+  import {
+    MODAL_DISMISSIBLE_KEY,
+    checkCanDismiss,
+    dismissInstance,
+    useModal,
+    type Dismissible,
+    type DismissReason,
+    type ModalInstance,
+    type ModalSize
+  } from './useModal';
 
-const { modalStack } = useModal();
+  const ModalDismissibleProvider = defineComponent({
+    props: {
+      dismissible: {
+        type: [Boolean, String],
+        required: true
+      }
+    },
+    setup(props, { slots }) {
+      provide(MODAL_DISMISSIBLE_KEY, props.dismissible as Dismissible);
+      return () => slots.default?.();
+    }
+  });
 
-const sizeClasses: Record<ModalSize, string> = {
-  small: "w-[438px]",
-  medium: "w-[672px]",
-  large: "w-[1140px]",
-};
+  const { modalStack } = useModal();
 
-// --- Dialog mode handlers ---
+  const sizeClasses = {
+    small: 'w-[438px]',
+    medium: 'w-[672px]',
+    large: 'w-[1140px]'
+  } satisfies Record<ModalSize, string>;
 
-let dialogDismissReason: DismissReason = "backdrop";
+  function showHandle(instance: ModalInstance): boolean {
+    const d = instance.options.dismissible ?? true;
+    return d === true;
+  }
 
-function setDialogDismissReason(reason: DismissReason) {
-  dialogDismissReason = reason;
-}
+  function isDismissibleSwipe(instance: ModalInstance): boolean {
+    const d = instance.options.dismissible ?? true;
+    return d === true;
+  }
 
-function handlePointerDownOutside(event: any) {
-  // Scrollbar click prevention — always block these
-  const orig = event.detail?.originalEvent;
-  if (orig) {
-    const target = orig.target as HTMLElement;
+  // --- Dialog mode handlers ---
+
+  let dialogDismissReason: DismissReason = 'backdrop';
+
+  function setDialogDismissReason(reason: DismissReason) {
+    dialogDismissReason = reason;
+  }
+
+  function handlePointerDownOutside(
+    event: CustomEvent<{ originalEvent: PointerEvent }>
+  ) {
+    const { originalEvent } = event.detail;
+    const target = originalEvent.target as HTMLElement;
     if (
-      orig.offsetX > target.clientWidth ||
-      orig.offsetY > target.clientHeight
+      originalEvent.offsetX > target.clientWidth ||
+      originalEvent.offsetY > target.clientHeight
     ) {
       event.preventDefault();
       return;
     }
+    dialogDismissReason = 'backdrop';
   }
-  dialogDismissReason = "backdrop";
-}
 
-function handleDialogDismiss(instance: ModalInstance) {
-  const reason = dialogDismissReason;
-  dialogDismissReason = "backdrop";
+  function handleDialogDismiss(instance: ModalInstance) {
+    const reason = dialogDismissReason;
+    dialogDismissReason = 'backdrop';
 
-  if (checkCanDismiss(instance, reason)) {
-    dismissInstance(instance, null, reason);
+    if (checkCanDismiss(instance, reason)) {
+      dismissInstance(instance, null, reason);
+    }
   }
-}
 
-// --- Sheet mode handlers ---
+  // --- Sheet mode handlers ---
 
-let sheetDismissReason: DismissReason = "swipe";
+  let sheetDismissReason: DismissReason = 'swipe';
 
-function setSheetDismissReason(reason: DismissReason) {
-  sheetDismissReason = reason;
-}
-
-function handleSheetDismiss(instance: ModalInstance) {
-  const reason = sheetDismissReason;
-  sheetDismissReason = "swipe";
-
-  if (checkCanDismiss(instance, reason)) {
-    dismissInstance(instance, null, reason);
+  function setSheetDismissReason(reason: DismissReason) {
+    sheetDismissReason = reason;
   }
-}
+
+  function handleSheetDismiss(instance: ModalInstance) {
+    const reason = sheetDismissReason;
+    sheetDismissReason = 'swipe';
+
+    if (checkCanDismiss(instance, reason)) {
+      dismissInstance(instance, null, reason);
+    }
+  }
 </script>

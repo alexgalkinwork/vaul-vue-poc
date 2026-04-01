@@ -1,4 +1,4 @@
-import { ref, readonly } from 'vue';
+import { readonly, ref } from 'vue';
 
 export type ToastPosition =
   | 'top-left'
@@ -39,7 +39,7 @@ const toasts = ref<ToastData[]>([]);
 let counter = 0;
 
 function getByPosition(position: ToastPosition) {
-  return toasts.value.find((toast) => toast.position === position);
+  return toasts.value.find(toast => toast.position === position);
 }
 
 function show(type: ToastType, message: string, options: ToastOptions = {}) {
@@ -55,7 +55,7 @@ function show(type: ToastType, message: string, options: ToastOptions = {}) {
     duration: options.duration ?? DEFAULT_DURATION,
     position,
     action: options.action,
-    onDismiss: options.onDismiss,
+    onDismiss: options.onDismiss
   });
 }
 
@@ -64,7 +64,7 @@ function dismiss(position: ToastPosition) {
   if (!existing) return;
 
   existing.onDismiss?.();
-  toasts.value = toasts.value.filter((toast) => toast.position !== position);
+  toasts.value = toasts.value.filter(toast => toast.position !== position);
 }
 
 export function useToast() {
@@ -79,6 +79,6 @@ export function useToast() {
       show('warning', message, options),
     info: (message: string, options?: ToastOptions) =>
       show('info', message, options),
-    dismiss,
+    dismiss
   };
 }

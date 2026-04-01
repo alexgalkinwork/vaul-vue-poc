@@ -1,25 +1,23 @@
-import { type Component, shallowRef } from "vue";
+import { type Component, type InjectionKey, readonly, shallowRef } from 'vue';
 
 export type DismissReason =
-  | "escape"
-  | "backdrop"
-  | "swipe"
-  | "close-button"
-  | "programmatic";
+  | 'escape'
+  | 'backdrop'
+  | 'swipe'
+  | 'close-button'
+  | 'programmatic';
 
-export type ModalSize = "small" | "medium" | "large";
+export type ModalSize = 'small' | 'medium' | 'large';
+
+export type Dismissible = true | 'persistent' | false;
 
 export interface ModalOptions {
   component: Component;
   componentProps?: Record<string, unknown>;
   size?: ModalSize;
   autoHeight?: boolean;
-  showHandle?: boolean;
-  backdropDismiss?: boolean;
+  dismissible?: Dismissible;
   canDismiss?: (reason: DismissReason) => boolean;
-  preventEscapeDismiss?: boolean;
-  preventSwipeDismiss?: boolean;
-  preventBackdropDismiss?: boolean;
   onPresent?: () => void;
   onWillDismiss?: () => void;
   onDidDismiss?: () => void;
@@ -33,79 +31,88 @@ export interface ModalResult<T = unknown> {
 export interface ModalInstance {
   id: number;
   options: ModalOptions;
-  resolve: (result: ModalResult) => void;
+  complete: (result: ModalResult) => void;
   isDesktop: boolean;
 }
 
+export const MODAL_DISMISSIBLE_KEY: InjectionKey<Dismissible> =
+  Symbol('modal-dismissible');
+
 let counter = 0;
-const modalStack = shallowRef<ModalInstance[]>([]);
+const stack = shallowRef<ModalInstance[]>([]);
 
 export function checkCanDismiss(
   instance: ModalInstance,
-  reason: DismissReason,
+  reason: DismissReason
 ): boolean {
-  const opts = instance.options;
-  if (reason === "escape" && opts.preventEscapeDismiss) return false;
-  if (reason === "swipe" && opts.preventSwipeDismiss) return false;
-  if (
-    reason === "backdrop" &&
-    (opts.preventBackdropDismiss || opts.backdropDismiss === false)
-  )
-    return false;
-  if (opts.canDismiss && !opts.canDismiss(reason)) return false;
-  return true;
-}
+  const dismissible = instance.options.dismissible ?? true;
 
-export function showModal<T = unknown>(
-  options: ModalOptions,
-): Promise<ModalResult<T>> {
-  return new Promise((resolve) => {
-    const isDesktop = window.innerWidth >= 1200;
-    const instance: ModalInstance = {
-      id: ++counter,
-      options,
-      resolve: resolve as (result: ModalResult) => void,
-      isDesktop,
-    };
-    modalStack.value = [...modalStack.value, instance];
-  });
+  if (dismissible === false) return false;
+
+  if (dismissible === 'persistent') {
+    if (reason === 'swipe' || reason === 'backdrop') return false;
+  }
+
+  if (instance.options.canDismiss && !instance.options.canDismiss(reason))
+    return false;
+
+  return true;
 }
 
 export function dismissInstance(
   instance: ModalInstance,
-  data?: unknown,
-  role?: string,
+  data: unknown = null,
+  role = 'dismiss'
 ) {
-  const stack = modalStack.value;
-  const index = stack.indexOf(instance);
-  if (index === -1) return;
+  if (!stack.value.includes(instance)) return;
+
   instance.options.onWillDismiss?.();
-  modalStack.value = [...stack.slice(0, index), ...stack.slice(index + 1)];
-  instance.resolve({ data: data ?? null, role: role ?? "dismiss" });
+  stack.value = stack.value.filter(i => i !== instance);
+  instance.complete({ data, role });
   instance.options.onDidDismiss?.();
 }
 
-export function dismiss(data?: unknown, role?: string) {
-  const stack = modalStack.value;
-  if (stack.length === 0) return;
-  dismissInstance(stack[stack.length - 1], data, role);
+function showModal<T = unknown>(
+  options: ModalOptions
+): Promise<ModalResult<T>> {
+  const { promise, resolve } = Promise.withResolvers<ModalResult<T>>();
+
+  stack.value = [
+    ...stack.value,
+    {
+      id: ++counter,
+      options,
+      complete: resolve as ModalInstance['complete'],
+      isDesktop: window.innerWidth >= 1200
+    }
+  ];
+
+  return promise;
 }
 
-export function dismissAll() {
-  const stack = [...modalStack.value];
-  modalStack.value = [];
-  for (let i = stack.length - 1; i >= 0; i--) {
-    stack[i].options.onWillDismiss?.();
-    stack[i].resolve({ data: null, role: "dismiss-all" });
-    stack[i].options.onDidDismiss?.();
-  }
+function dismiss(data: unknown = null, role = 'dismiss') {
+  const top = stack.value.at(-1);
+  if (top) dismissInstance(top, data, role);
+}
+
+function dismissAll() {
+  const current = [...stack.value];
+  stack.value = [];
+
+  current.toReversed().forEach(instance => {
+    instance.options.onWillDismiss?.();
+    instance.complete({ data: null, role: 'dismiss-all' });
+    instance.options.onDidDismiss?.();
+  });
 }
 
 export function useModal() {
   return {
-    modalStack,
+    modalStack: readonly(stack),
     showModal,
     dismiss,
-    dismissAll,
+    dismissAll
   } as const;
 }
+
+export { dismiss, dismissAll, showModal };

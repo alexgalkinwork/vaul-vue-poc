@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prettier:*)",
+      "Bash(ls /Users/alexgalkin/pocs/vaul-vue-poc/.prettierrc* /Users/alexgalkin/pocs/vaul-vue-poc/prettier.config.*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

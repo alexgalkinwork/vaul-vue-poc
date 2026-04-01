@@ -4,7 +4,7 @@
       <ModalHeader :title="title" />
     </template>
 
-    <div class="p-4 space-y-4">
+    <div class="space-y-4 p-4">
       <p class="text-gray-600">{{ message }}</p>
     </div>
 
@@ -12,14 +12,12 @@
       <div class="flex gap-3 p-4">
         <button
           class="flex-1 rounded-lg border border-gray-300 px-4 py-3 font-medium active:bg-gray-50"
-          @click="dismiss(null, 'cancel')"
-        >
+          @click="dismiss(null, 'cancel')">
           Cancel
         </button>
         <button
-          class="flex-1 rounded-lg bg-red-600 px-4 py-3 text-white font-medium active:bg-red-700"
-          @click="dismiss({ confirmed: true }, 'confirm')"
-        >
+          class="flex-1 rounded-lg bg-red-600 px-4 py-3 font-medium text-white active:bg-red-700"
+          @click="dismiss({ confirmed: true }, 'confirm')">
           {{ confirmLabel }}
         </button>
       </div>
@@ -28,17 +26,17 @@
 </template>
 
 <script setup lang="ts">
-import ModalTemplate from "../ModalTemplate.vue";
-import ModalHeader from "../ModalHeader.vue";
-import { dismiss } from "../useModal";
+  import ModalHeader from '../ModalHeader.vue';
+  import ModalTemplate from '../ModalTemplate.vue';
+  import { dismiss } from '../useModal';
 
-const {
-  title = "Are you sure?",
-  message = "This action cannot be undone.",
-  confirmLabel = "Confirm",
-} = defineProps<{
-  title?: string;
-  message?: string;
-  confirmLabel?: string;
-}>();
+  const {
+    title = 'Are you sure?',
+    message = 'This action cannot be undone.',
+    confirmLabel = 'Confirm'
+  } = defineProps<{
+    title?: string;
+    message?: string;
+    confirmLabel?: string;
+  }>();
 </script>

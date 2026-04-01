@@ -1,15 +1,17 @@
 <template>
-  <DrawerRoot :open="open" @update:open="onOpenChange">
+  <DrawerRoot
+    :open="open"
+    @update:open="onOpenChange">
     <DrawerPortal>
       <DrawerOverlay class="fixed inset-0 bg-black/40" />
       <DrawerContent
-        class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-2xl bg-white">
+        class="fixed right-0 bottom-0 left-0 flex flex-col rounded-t-2xl bg-white">
         <div
-          class="mx-auto mt-2 mb-1 h-1.5 w-12 rounded-full bg-gray-300 shrink-0" />
-        <div class="flex items-center justify-between px-4 pt-2 pb-2 shrink-0">
+          class="mx-auto mt-2 mb-1 h-1.5 w-12 shrink-0 rounded-full bg-gray-300" />
+        <div class="flex shrink-0 items-center justify-between px-4 pt-2 pb-2">
           <DrawerTitle class="text-lg font-semibold"> Fit Content </DrawerTitle>
           <button
-            class="h-8 w-8 rounded-full hover:bg-gray-100 active:bg-gray-200 text-gray-500 flex items-center justify-center"
+            class="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 active:bg-gray-200"
             @click="open = false">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -27,12 +29,12 @@
           </button>
         </div>
         <DrawerDescription class="sr-only"> Sheet content </DrawerDescription>
-        <div class="p-4 space-y-4">
+        <div class="space-y-4 p-4">
           <p class="text-gray-600">
             This sheet should only be as tall as its content — no extra space.
           </p>
           <button
-            class="w-full rounded-lg bg-blue-600 px-4 py-3 text-white font-medium active:bg-blue-700"
+            class="w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white active:bg-blue-700"
             @click="open = false">
             Got it
           </button>
@@ -43,21 +45,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import {
-  DrawerRoot,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerTitle,
-  DrawerDescription,
-} from 'vaul-vue';
+  import {
+    DrawerContent,
+    DrawerDescription,
+    DrawerOverlay,
+    DrawerPortal,
+    DrawerRoot,
+    DrawerTitle
+  } from 'vaul-vue';
+  import { ref } from 'vue';
 
-const emit = defineEmits<{ close: [result?: string] }>();
-const open = ref(true);
+  const emit = defineEmits<{ close: [result?: string] }>();
+  const open = ref(true);
 
-function onOpenChange(val: boolean) {
-  if (!val) emit('close', 'dismiss');
-  open.value = val;
-}
+  function onOpenChange(val: boolean) {
+    if (!val) emit('close', 'dismiss');
+    open.value = val;
+  }
 </script>

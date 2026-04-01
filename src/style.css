@@ -2,24 +2,22 @@
 
 html,
 body {
-  overflow: hidden;
   overscroll-behavior: none;
-  height: 100%;
 }
 
-#app {
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
+html.drawer-open body {
+  position: fixed;
+  width: 100%;
+  overflow-y: scroll;
 }
 
-body:has([data-vaul-drawer]) [vaul-drawer-wrapper] {
-  overflow: hidden !important;
-}
 
-[data-vaul-drawer] {
-  box-shadow: 0 10px 0 10px white;
+[data-vaul-drawer],
+[data-vaul-drawer] > * {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Staggered entrance animation */

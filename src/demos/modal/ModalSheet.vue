@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, provide, ref } from 'vue';
+  import { computed, onMounted, onUnmounted, provide, ref } from 'vue';
   import {
     DrawerContent,
     DrawerDescription,
@@ -53,6 +53,18 @@
   }>();
 
   provide(MODAL_DISMISSIBLE_KEY, instance.options.dismissible ?? true);
+
+  let savedScrollY = 0;
+  onMounted(() => {
+    savedScrollY = window.scrollY;
+    document.body.style.top = `-${savedScrollY}px`;
+    document.documentElement.classList.add('drawer-open');
+  });
+  onUnmounted(() => {
+    document.documentElement.classList.remove('drawer-open');
+    document.body.style.top = '';
+    window.scrollTo(0, savedScrollY);
+  });
 
   const swipeable = computed(
     () => (instance.options.dismissible ?? true) === true

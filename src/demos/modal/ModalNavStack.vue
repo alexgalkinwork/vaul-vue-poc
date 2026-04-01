@@ -26,7 +26,7 @@
       <ModalClose />
     </div>
 
-    <div class="relative flex-1 overflow-hidden">
+    <div class="relative min-h-0 flex-1 overflow-hidden">
       <Transition
         :name="transitionName"
         mode="out-in">

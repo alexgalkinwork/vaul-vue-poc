@@ -22,7 +22,10 @@
       "Bash(echo \"FAIL: $f\")",
       "Bash(done)",
       "Bash(wc -l /Users/alexgalkin/pocs/vaul-vue-poc/src/demos/modal/vaul-vue-src/*)",
-      "Bash(do sed:*)"
+      "Bash(do sed:*)",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:ionic.io)",
+      "WebFetch(domain:m3.material.io)"
     ]
   }
 }

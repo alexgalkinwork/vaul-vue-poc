@@ -13,7 +13,7 @@
           :class="index === 0 ? 'bg-black/30' : ''"
           :style="{ zIndex: 100 + index * 10 }" />
         <DialogContent
-          class="fixed top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-white"
+          class="fixed top-1/2 left-1/2 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-white"
           :class="[
             sizeClasses[instance.options.size ?? 'medium'],
             index > 0 ? 'shadow-[0_28px_48px_rgba(0,0,0,0.4)]' : 'shadow-xl',

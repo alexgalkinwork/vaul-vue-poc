@@ -58,6 +58,27 @@
 
     <section>
       <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
+        Zeitraum mit Einschränkungen
+      </h3>
+      <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <label class="mb-2 block text-sm font-medium text-gray-700">
+          Buchungszeitraum (nur Werktage, max 14 Tage, ab heute)
+        </label>
+        <DateRangePicker
+          v-model="constrainedRange"
+          :min-value="todayDate"
+          :is-date-disabled="isWeekend" />
+        <p
+          v-if="constrainedRange?.start && constrainedRange?.end"
+          class="mt-2 text-sm text-gray-600">
+          Zeitraum: {{ formatDate(constrainedRange.start) }} –
+          {{ formatDate(constrainedRange.end) }}
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
         Deaktiviert
       </h3>
       <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
@@ -89,6 +110,7 @@
   const singleDate = ref<DateValue>();
   const constrainedDate = ref<DateValue>();
   const rangeValue = ref<DateRange>();
+  const constrainedRange = ref<DateRange>();
   const disabledDate = ref<DateValue>(new CalendarDate(2026, 3, 15));
 
   const todayDate = today(getLocalTimeZone());

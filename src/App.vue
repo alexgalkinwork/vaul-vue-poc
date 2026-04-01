@@ -58,34 +58,6 @@
       </div>
     </div>
 
-    <BasicSheet
-      v-if="activeDemo === 'basic'"
-      @close="handleClose" />
-    <BreakpointsSheet
-      v-if="activeDemo === 'breakpoints'"
-      @close="handleClose" />
-    <FormSheet
-      v-if="activeDemo === 'form'"
-      @close="handleClose" />
-    <LongFormSheet
-      v-if="activeDemo === 'longform'"
-      @close="handleClose" />
-    <FitContentSheet
-      v-if="activeDemo === 'fitcontent'"
-      @close="handleClose" />
-    <FullScreenSheet
-      v-if="activeDemo === 'fullscreen'"
-      @close="handleClose" />
-    <StackedSheetA
-      v-if="activeDemo === 'stacked'"
-      @close="handleClose" />
-    <DismissResultSheet
-      v-if="activeDemo === 'result'"
-      @close="handleClose" />
-    <MultiStepSheet
-      v-if="activeDemo === 'multistep'"
-      @close="handleClose" />
-
     <DrawerRoot
       :open="drawerOpen"
       @update:open="(v: boolean) => (drawerOpen = v)">
@@ -161,19 +133,10 @@
   import UndismissableContent from './demos/modal/examples/UndismissableContent.vue';
   import ResponsiveModal from './demos/modal/ResponsiveModal.vue';
   import { showModal, type ModalSize } from './demos/modal/useModal';
-  import BasicSheet from './demos/sheets/BasicSheet.vue';
-  import BreakpointsSheet from './demos/sheets/BreakpointsSheet.vue';
-  import DismissResultSheet from './demos/sheets/DismissResultSheet.vue';
-  import FitContentSheet from './demos/sheets/FitContentSheet.vue';
-  import FormSheet from './demos/sheets/FormSheet.vue';
-  import FullScreenSheet from './demos/sheets/FullScreenSheet.vue';
-  import LongFormSheet from './demos/sheets/LongFormSheet.vue';
-  import MultiStepSheet from './demos/sheets/MultiStepSheet.vue';
-  import StackedSheetA from './demos/sheets/StackedSheetA.vue';
+  import LongFormContent from './demos/modal/examples/LongFormContent.vue';
   import ToastContainer from './demos/toast/ToastContainer.vue';
   import { useToast, type ToastPosition } from './demos/toast/useToast';
 
-  const activeDemo = ref<string | null>(null);
   const lastResult = ref('');
   const toast = useToast();
   const dismissLog = ref<string[]>([]);
@@ -185,19 +148,6 @@
     'bottom-left',
     'bottom-right'
   ];
-
-  function handleClose(result?: string) {
-    if (result) {
-      lastResult.value = result;
-    }
-    activeDemo.value = null;
-  }
-
-  function openSheet(id: string) {
-    return () => {
-      activeDemo.value = id;
-    };
-  }
 
   function logDismiss(label: string) {
     dismissLog.value.unshift(`${new Date().toLocaleTimeString()}: ${label}`);
@@ -389,9 +339,7 @@
             });
             setTimeout(
               () =>
-                toast.success('I am above the modal!', {
-                  position: 'top-right'
-                }),
+                toast.success('I am above the modal!'),
               500
             );
           }
@@ -399,61 +347,41 @@
       ]
     },
     {
-      section: 'Sheets (vaul-vue direct)',
+      section: 'Weitere Modal-Demos',
       tests: [
         {
-          id: 'basic',
-          label: 'Basic Sheet',
-          desc: 'Simple content, swipe to dismiss',
-          fn: openSheet('basic')
+          id: 'm-longform',
+          label: 'Langes Formular (12 Felder)',
+          desc: 'Scroll + Keyboard bei vielen Inputs',
+          fn: () =>
+            openModal(
+              {
+                component: LongFormContent,
+                size: 'medium',
+                dismissible: 'persistent'
+              },
+              'Long form'
+            )
         },
         {
-          id: 'breakpoints',
-          label: 'Breakpoints',
-          desc: 'Snap points at 25%, 50%, 100%',
-          fn: openSheet('breakpoints')
-        },
-        {
-          id: 'form',
-          label: 'Form (Keyboard)',
-          desc: 'Critical test — inputs + keyboard',
-          fn: openSheet('form')
-        },
-        {
-          id: 'longform',
-          label: 'Long Form',
-          desc: 'Scrollable form, 12 fields',
-          fn: openSheet('longform')
-        },
-        {
-          id: 'fitcontent',
-          label: 'Fit Content',
-          desc: 'Auto-sized to content',
-          fn: openSheet('fitcontent')
-        },
-        {
-          id: 'fullscreen',
-          label: 'Full Screen',
-          desc: 'Takes entire viewport',
-          fn: openSheet('fullscreen')
-        },
-        {
-          id: 'stacked',
-          label: 'Stacked',
-          desc: 'Sheet opens another sheet',
-          fn: openSheet('stacked')
-        },
-        {
-          id: 'result',
-          label: 'Dismiss Result',
-          desc: 'Data passed back on dismiss',
-          fn: openSheet('result')
-        },
-        {
-          id: 'multistep',
-          label: 'Multi-Step',
-          desc: '3-step form with back button',
-          fn: openSheet('multistep')
+          id: 'm-fit-content',
+          label: 'Auto Height (kurzer Inhalt)',
+          desc: 'Modal passt sich der Content-Höhe an',
+          fn: () =>
+            openModal(
+              {
+                component: ConfirmContent,
+                componentProps: {
+                  title: 'Bestellung stornieren?',
+                  message:
+                    'Möchtest du die Bestellung wirklich stornieren? Dies kann nicht rückgängig gemacht werden.',
+                  confirmLabel: 'Stornieren'
+                },
+                size: 'small',
+                autoHeight: true
+              },
+              'Auto height'
+            )
         }
       ]
     },

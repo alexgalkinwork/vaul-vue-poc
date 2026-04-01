@@ -134,6 +134,8 @@
   import ResponsiveModal from './demos/modal/ResponsiveModal.vue';
   import { showModal, type ModalSize } from './demos/modal/useModal';
   import LongFormContent from './demos/modal/examples/LongFormContent.vue';
+  import ProductContent from './demos/modal/examples/ProductContent.vue';
+  import TimeslotContent from './demos/modal/examples/TimeslotContent.vue';
   import ToastContainer from './demos/toast/ToastContainer.vue';
   import { useToast, type ToastPosition } from './demos/toast/useToast';
 
@@ -381,6 +383,30 @@
                 autoHeight: true
               },
               'Auto height'
+            )
+        },
+        {
+          id: 'm-product',
+          label: 'Produkt-Quickview',
+          desc: 'Custom Header (Bild), Custom Footer (Menge + Warenkorb)',
+          fn: () =>
+            openModal(
+              { component: ProductContent, size: 'small' },
+              'Product'
+            )
+        },
+        {
+          id: 'm-timeslot',
+          label: 'Lieferzeit wählen',
+          desc: 'Custom Header (Titel + Datum), Slot-Auswahl, Footer-Button',
+          fn: () =>
+            openModal(
+              {
+                component: TimeslotContent,
+                size: 'small',
+                dismissible: 'persistent'
+              },
+              'Timeslot'
             )
         }
       ]

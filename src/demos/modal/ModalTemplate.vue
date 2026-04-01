@@ -1,10 +1,12 @@
 <template>
   <div class="flex flex-1 flex-col overflow-hidden">
     <div
-      v-if="$slots.header"
-      class="shrink-0 border-b border-transparent transition-colors duration-150"
+      class="flex shrink-0 items-start border-b border-transparent px-4 pt-3 pb-2 transition-colors duration-150"
       :class="{ 'border-gray-200': isScrolled }">
-      <slot name="header" />
+      <div class="min-w-0 flex-1">
+        <slot name="header" />
+      </div>
+      <ModalClose />
     </div>
 
     <div
@@ -25,6 +27,7 @@
 
 <script setup lang="ts">
   import { onMounted, ref, useTemplateRef } from 'vue';
+  import ModalClose from './ModalClose.vue';
 
   const scrollEl = useTemplateRef<HTMLElement>('scrollEl');
   const isScrolled = ref(false);

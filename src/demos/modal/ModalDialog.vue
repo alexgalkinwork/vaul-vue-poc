@@ -18,7 +18,7 @@
         @escape-key-down.prevent="tryDismiss('escape')"
         @pointer-down-outside.prevent="tryDismiss('backdrop')"
         @interact-outside.prevent
-        @open-auto-focus="() => instance.options.onPresent?.()">
+        @open-auto-focus="instance.options.onPresent">
         <DialogTitle class="sr-only">Modal</DialogTitle>
         <DialogDescription class="sr-only">Modal content</DialogDescription>
         <component
@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-  import { provide } from 'vue';
   import {
     DialogContent,
     DialogDescription,
@@ -39,6 +38,7 @@
     DialogRoot,
     DialogTitle
   } from 'reka-ui';
+  import { provide } from 'vue';
   import {
     MODAL_DISMISSIBLE_KEY,
     checkCanDismiss,

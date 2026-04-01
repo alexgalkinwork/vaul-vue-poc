@@ -1,19 +1,18 @@
 <template>
-  <div class="space-y-4">
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+  <div
+    class="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-gray-200 bg-gray-200">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Lieferdatum
       </label>
       <DatePicker v-model="singleDate" />
-      <p
-        v-if="singleDate"
-        class="mt-2 text-xs text-gray-500">
+      <p v-if="singleDate" class="mt-2 text-xs text-gray-500">
         {{ formatDate(singleDate) }}
       </p>
     </div>
 
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Termin (nur Werktage, nächste 30 Tage)
       </label>
       <DatePicker
@@ -21,15 +20,13 @@
         :min-value="todayDate"
         :max-value="maxDate"
         :is-date-disabled="isWeekend" />
-      <p
-        v-if="constrainedDate"
-        class="mt-2 text-xs text-gray-500">
+      <p v-if="constrainedDate" class="mt-2 text-xs text-gray-500">
         {{ formatDate(constrainedDate) }}
       </p>
     </div>
 
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Urlaubszeitraum
       </label>
       <DateRangePicker v-model="rangeValue" />
@@ -40,8 +37,8 @@
       </p>
     </div>
 
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Buchungszeitraum (nur Werktage, ab heute)
       </label>
       <DateRangePicker
@@ -56,25 +53,21 @@
       </p>
     </div>
 
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Mit externer Validation
       </label>
-      <DatePicker
-        v-model="validatedDate"
-        :error="externalError" />
+      <DatePicker v-model="validatedDate" :error="externalError" />
       <p class="mt-1 text-xs text-gray-400">
         Nur Dienstage erlaubt (externe Regel)
       </p>
     </div>
 
-    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <label class="mb-2 block text-sm font-medium text-gray-700">
+    <div class="bg-white px-4 py-4">
+      <label class="mb-2 block text-[13px] font-medium text-gray-700">
         Deaktiviert
       </label>
-      <DatePicker
-        v-model="disabledDate"
-        disabled />
+      <DatePicker v-model="disabledDate" disabled />
     </div>
   </div>
 </template>

@@ -2,7 +2,6 @@ import {
   type Component,
   type InjectionKey,
   markRaw,
-  readonly,
   shallowRef
 } from 'vue';
 
@@ -114,7 +113,7 @@ function dismissAll() {
 
 export function useModal() {
   return {
-    modalStack: readonly(stack),
+    modalStack: stack,
     showModal,
     dismiss,
     dismissAll

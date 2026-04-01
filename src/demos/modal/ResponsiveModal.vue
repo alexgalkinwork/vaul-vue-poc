@@ -6,12 +6,7 @@
     <DialogRoot
       v-if="instance.isDesktop"
       :open="true"
-      :modal="true"
-      @update:open="
-        (val: boolean) => {
-          if (!val) handleDialogDismiss(instance);
-        }
-      ">
+      :modal="true">
       <DialogPortal>
         <DialogOverlay
           class="fixed inset-0"
@@ -25,8 +20,13 @@
             instance.options.autoHeight ? 'max-h-dvh' : 'max-h-[85vh]'
           ]"
           :style="{ zIndex: 101 + index * 10 }"
-          @escape-key-down="() => setDialogDismissReason('escape')"
-          @pointer-down-outside="handlePointerDownOutside"
+          @escape-key-down="
+            (e: KeyboardEvent) => handleDialogEvent(e, instance, 'escape')
+          "
+          @pointer-down-outside="
+            (e: any) => handlePointerDownOutside(e, instance)
+          "
+          @interact-outside="(e: any) => e.preventDefault()"
           @open-auto-focus="() => instance.options.onPresent?.()">
           <DialogTitle class="sr-only">Modal</DialogTitle>
           <DialogDescription class="sr-only">Modal content</DialogDescription>
@@ -132,48 +132,44 @@
   } satisfies Record<ModalSize, string>;
 
   function showHandle(instance: ModalInstance): boolean {
-    const d = instance.options.dismissible ?? true;
-    return d === true;
+    return (instance.options.dismissible ?? true) === true;
   }
 
   function isDismissibleSwipe(instance: ModalInstance): boolean {
-    const d = instance.options.dismissible ?? true;
-    return d === true;
+    return (instance.options.dismissible ?? true) === true;
   }
 
-  // --- Dialog mode handlers ---
+  // --- Dialog: prevent all events, dismiss manually ---
 
-  let dialogDismissReason: DismissReason = 'backdrop';
-
-  function setDialogDismissReason(reason: DismissReason) {
-    dialogDismissReason = reason;
-  }
-
-  function handlePointerDownOutside(
-    event: CustomEvent<{ originalEvent: PointerEvent }>
+  function handleDialogEvent(
+    event: Event,
+    instance: ModalInstance,
+    reason: DismissReason
   ) {
-    const { originalEvent } = event.detail;
-    const target = originalEvent.target as HTMLElement;
-    if (
-      originalEvent.offsetX > target.clientWidth ||
-      originalEvent.offsetY > target.clientHeight
-    ) {
-      event.preventDefault();
-      return;
-    }
-    dialogDismissReason = 'backdrop';
-  }
-
-  function handleDialogDismiss(instance: ModalInstance) {
-    const reason = dialogDismissReason;
-    dialogDismissReason = 'backdrop';
-
+    event.preventDefault();
     if (checkCanDismiss(instance, reason)) {
       dismissInstance(instance, null, reason);
     }
   }
 
-  // --- Sheet mode handlers ---
+  function handlePointerDownOutside(event: any, instance: ModalInstance) {
+    event.preventDefault();
+    const orig = event.detail?.originalEvent as PointerEvent | undefined;
+    if (orig) {
+      const target = orig.target as HTMLElement;
+      if (
+        orig.offsetX > target.clientWidth ||
+        orig.offsetY > target.clientHeight
+      ) {
+        return;
+      }
+    }
+    if (checkCanDismiss(instance, 'backdrop')) {
+      dismissInstance(instance, null, 'backdrop');
+    }
+  }
+
+  // --- Sheet: track reason via events, dismiss on update:open ---
 
   let sheetDismissReason: DismissReason = 'swipe';
 
@@ -184,7 +180,6 @@
   function handleSheetDismiss(instance: ModalInstance) {
     const reason = sheetDismissReason;
     sheetDismissReason = 'swipe';
-
     if (checkCanDismiss(instance, reason)) {
       dismissInstance(instance, null, reason);
     }

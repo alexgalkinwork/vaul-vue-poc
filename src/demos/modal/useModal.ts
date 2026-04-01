@@ -1,4 +1,10 @@
-import { type Component, type InjectionKey, readonly, shallowRef } from 'vue';
+import {
+  type Component,
+  type InjectionKey,
+  markRaw,
+  readonly,
+  shallowRef
+} from 'vue';
 
 export type DismissReason =
   | 'escape'
@@ -81,7 +87,7 @@ function showModal<T = unknown>(
     ...stack.value,
     {
       id: ++counter,
-      options,
+      options: { ...options, component: markRaw(options.component) },
       complete: resolve as ModalInstance['complete'],
       isDesktop: window.innerWidth >= 1200
     }

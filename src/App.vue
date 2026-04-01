@@ -28,6 +28,14 @@
         </div>
       </div>
 
+      <div class="mb-6">
+        <h3
+          class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
+          DatePicker (reka-ui)
+        </h3>
+        <DatePickerDemo />
+      </div>
+
       <div
         v-if="dismissLog.length"
         class="mt-6 rounded-lg bg-gray-100 p-3">
@@ -143,6 +151,7 @@
     DrawerTitle
   } from 'vaul-vue';
   import { ref } from 'vue';
+  import DatePickerDemo from './demos/datepicker/DatePickerDemo.vue';
   import BasicContent from './demos/modal/examples/BasicContent.vue';
   import ConfirmContent from './demos/modal/examples/ConfirmContent.vue';
   import FormContent from './demos/modal/examples/FormContent.vue';

@@ -4,6 +4,7 @@ import {
   markRaw,
   shallowRef
 } from 'vue';
+import { TRANSITIONS } from '../../lib/vaul-vue/constants';
 
 export type DismissReason =
   | 'escape'
@@ -72,9 +73,18 @@ export function dismissInstance(
   if (!stack.value.includes(instance)) return;
 
   instance.options.onWillDismiss?.();
-  stack.value = stack.value.filter(i => i !== instance);
   instance.complete({ data, role });
-  instance.options.onDidDismiss?.();
+
+  if (instance.isDesktop) {
+    stack.value = stack.value.filter(i => i !== instance);
+    instance.options.onDidDismiss?.();
+  } else {
+    // Mobile sheet: delay stack removal to allow vaul-vue's close animation
+    setTimeout(() => {
+      stack.value = stack.value.filter(i => i !== instance);
+      instance.options.onDidDismiss?.();
+    }, TRANSITIONS.DURATION * 1000);
+  }
 }
 
 function showModal<T = unknown>(

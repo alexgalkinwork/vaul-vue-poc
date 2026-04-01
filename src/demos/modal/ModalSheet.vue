@@ -1,6 +1,6 @@
 <template>
   <DrawerRoot
-    :open="true"
+    :open="isOpen"
     :dismissible="swipeable"
     @update:open="onOpenChange"
     @animation-end="onAnimationEnd">
@@ -58,7 +58,15 @@
     () => (instance.options.dismissible ?? true) === true
   );
 
+  const isOpen = ref(true);
   const pendingReason = ref<DismissReason>('swipe');
+
+  // Hook into onWillDismiss to trigger close animation before stack removal
+  const originalOnWillDismiss = instance.options.onWillDismiss;
+  instance.options.onWillDismiss = () => {
+    isOpen.value = false;
+    originalOnWillDismiss?.();
+  };
 
   function onOpenChange(open: boolean) {
     if (open) return;

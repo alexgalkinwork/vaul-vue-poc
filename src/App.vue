@@ -3,8 +3,8 @@
     vaul-drawer-wrapper
     class="min-h-dvh touch-manipulation bg-gray-50 select-none">
     <!-- Header -->
-    <header class="sticky top-0 z-30 border-b border-gray-200/80 bg-white/80 backdrop-blur-xl">
-      <div class="mx-auto max-w-3xl px-5 py-5">
+    <div class="sticky top-0 z-30 px-3 pt-3 lg:px-5 lg:pt-4">
+      <header class="mx-auto max-w-3xl rounded-2xl bg-white px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.04)]">
         <div class="flex items-baseline gap-3">
           <h1 class="text-lg font-bold tracking-tight text-gray-900">
             Component Lab
@@ -13,11 +13,11 @@
             reka-ui + vaul-vue
           </span>
         </div>
-        <p class="mt-0.5 text-[13px] text-gray-400">
+        <p class="mt-0.5 text-[13px] text-gray-500">
           Ionic-Ersatz Evaluierung
         </p>
-      </div>
-    </header>
+      </header>
+    </div>
 
     <main class="mx-auto max-w-3xl px-5 pt-10 pb-16">
 

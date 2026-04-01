@@ -160,6 +160,7 @@
   import ProductContent from './demos/modal/examples/ProductContent.vue';
   import ScrollContent from './demos/modal/examples/ScrollContent.vue';
   import TimeslotContent from './demos/modal/examples/TimeslotContent.vue';
+  import AddressFlow from './demos/modal/examples/address-flow/AddressFlow.vue';
   import UndismissableContent from './demos/modal/examples/UndismissableContent.vue';
   import ResponsiveModal from './demos/modal/ResponsiveModal.vue';
   import { showModal, type ModalSize } from './demos/modal/useModal';
@@ -425,6 +426,20 @@
                 dismissible: 'persistent'
               },
               'Timeslot'
+            )
+        },
+        {
+          id: 'm-address-flow',
+          label: 'Adress-Flow (NavStack)',
+          desc: 'Wie Adresswechsel im Warenkorb: Stack-Navigation innerhalb des Modals. Root → Suche → Karte, mit Slide-Animation und Back-Button.',
+          fn: () =>
+            openModal(
+              {
+                component: AddressFlow,
+                size: 'medium',
+                dismissible: 'persistent'
+              },
+              'Address flow'
             )
         }
       ]

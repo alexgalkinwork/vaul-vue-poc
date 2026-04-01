@@ -1,4 +1,5 @@
 <template>
+  <div>
   <DatePickerRoot
     v-model="model"
     :locale="locale"
@@ -13,8 +14,13 @@
     @update:placeholder="(d: RekaDateValue) => (placeholder = d)">
     <DatePickerField
       v-slot="{ segments }"
-      class="inline-flex w-auto items-center rounded-lg border border-gray-300 px-3 py-2.5 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
-      :class="{ 'opacity-50': disabled }">
+      class="inline-flex w-auto items-center rounded-lg border px-3 py-2.5 focus-within:ring-1"
+      :class="[
+        disabled ? 'opacity-50' : '',
+        hasError
+          ? 'border-red-500 focus-within:border-red-500 focus-within:ring-red-500'
+          : 'border-gray-300 focus-within:border-blue-500 focus-within:ring-blue-500'
+      ]">
       <div class="flex flex-1 items-center">
         <template
           v-for="item in segments"
@@ -156,6 +162,12 @@
       </DatePickerCalendar>
     </DatePickerContent>
   </DatePickerRoot>
+  <p
+    v-if="errorMessage"
+    class="mt-1 text-xs text-red-500">
+    {{ errorMessage }}
+  </p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -167,7 +179,7 @@
     getLocalTimeZone,
     today
   } from '@internationalized/date';
-  import { computed, ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import {
     DatePickerCalendar,
     DatePickerCell,
@@ -194,7 +206,12 @@
     weekStartsOn = 1,
     yearMin = new Date().getFullYear() - 100,
     yearMax = new Date().getFullYear() + 10,
-    disabled = false
+    disabled = false,
+    minValue,
+    maxValue,
+    isDateDisabled,
+    isDateUnavailable,
+    error
   } = defineProps<{
     locale?: string;
     weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -205,6 +222,7 @@
     isDateDisabled?: (date: DateValue) => boolean;
     isDateUnavailable?: (date: DateValue) => boolean;
     disabled?: boolean;
+    error?: string;
   }>();
 
   const placeholder = ref<RekaDateValue>(
@@ -231,4 +249,27 @@
     if (!placeholder.value) return;
     placeholder.value = placeholder.value.set({ year });
   }
+
+  const internalError = ref('');
+
+  watch(model, date => {
+    if (!date) {
+      internalError.value = '';
+      return;
+    }
+    if (minValue && date.compare(minValue) < 0) {
+      internalError.value = 'Datum liegt vor dem erlaubten Bereich';
+    } else if (maxValue && date.compare(maxValue) > 0) {
+      internalError.value = 'Datum liegt nach dem erlaubten Bereich';
+    } else if (isDateDisabled && isDateDisabled(date)) {
+      internalError.value = 'Dieses Datum ist nicht verfügbar';
+    } else if (isDateUnavailable && isDateUnavailable(date)) {
+      internalError.value = 'Dieses Datum ist nicht verfügbar';
+    } else {
+      internalError.value = '';
+    }
+  });
+
+  const errorMessage = computed(() => error ?? internalError.value);
+  const hasError = computed(() => !!errorMessage.value);
 </script>

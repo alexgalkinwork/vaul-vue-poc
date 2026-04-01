@@ -58,6 +58,18 @@
 
     <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <label class="mb-2 block text-sm font-medium text-gray-700">
+        Mit externer Validation
+      </label>
+      <DatePicker
+        v-model="validatedDate"
+        :error="externalError" />
+      <p class="mt-1 text-xs text-gray-400">
+        Nur Dienstage erlaubt (externe Regel)
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <label class="mb-2 block text-sm font-medium text-gray-700">
         Deaktiviert
       </label>
       <DatePicker
@@ -70,7 +82,7 @@
 <script setup lang="ts">
   import type { DateRange } from 'reka-ui';
   import type { DateValue } from '@internationalized/date';
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import {
     CalendarDate,
     DateFormatter,
@@ -85,7 +97,14 @@
   const constrainedDate = ref<DateValue>();
   const rangeValue = ref<DateRange>();
   const constrainedRange = ref<DateRange>();
+  const validatedDate = ref<DateValue>();
   const disabledDate = ref<DateValue>(new CalendarDate(2026, 3, 15));
+
+  const externalError = computed(() => {
+    if (!validatedDate.value) return undefined;
+    const day = getDayOfWeek(validatedDate.value, 'de-DE');
+    return day !== 1 ? 'Nur Dienstage sind buchbar' : undefined;
+  });
 
   const todayDate = today(getLocalTimeZone());
   const maxDate = todayDate.add({ days: 30 });

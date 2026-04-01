@@ -2,60 +2,87 @@
   <div
     vaul-drawer-wrapper
     class="min-h-dvh bg-gray-50">
-    <div class="mx-auto max-w-lg p-4 pb-8">
-      <h1 class="mb-1 text-2xl font-bold">Vaul-Vue POC</h1>
-      <p class="mb-6 text-sm text-gray-500">
-        Testing vaul-vue, reka-ui Toast, and responsive modal system.
+    <div class="mx-auto max-w-2xl p-4 pb-8">
+      <h1 class="mb-1 text-2xl font-bold">Reka UI Component POC</h1>
+      <p class="mb-8 text-sm text-gray-500">
+        Evaluierung von reka-ui + vaul-vue als Ionic-Ersatz. Responsive Modals,
+        Toasts und DatePicker.
       </p>
 
-      <div
-        v-for="group in demoGroups"
-        :key="group.section"
-        class="mb-6">
-        <h3
-          class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
-          {{ group.section }}
-        </h3>
-        <div class="space-y-2">
-          <button
-            v-for="tc in group.tests"
-            :key="tc.id"
-            class="w-full rounded-xl border border-gray-200 bg-white p-4 text-left shadow-sm active:bg-gray-50"
-            @click="tc.fn()">
-            <div class="font-medium">{{ tc.label }}</div>
-            <div class="text-sm text-gray-500">{{ tc.desc }}</div>
-          </button>
+      <!-- Modals -->
+      <section class="mb-10">
+        <div class="mb-4 border-l-4 border-blue-500 pl-3">
+          <h2 class="text-lg font-bold text-gray-900">Responsive Modals</h2>
+          <p class="text-sm text-gray-500">
+            Auf Desktop (≥1200px) als Dialog, auf Mobile als Bottom Sheet.
+            Eine API für beides.
+          </p>
         </div>
-      </div>
 
-      <div class="mb-6">
-        <h3
-          class="mb-2 text-sm font-semibold tracking-wider text-gray-400 uppercase">
-          DatePicker
-        </h3>
+        <div
+          v-for="group in modalGroups"
+          :key="group.section"
+          class="mb-5">
+          <h3
+            class="mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">
+            {{ group.section }}
+          </h3>
+          <div class="grid gap-2" :class="group.grid ?? 'grid-cols-1'">
+            <button
+              v-for="tc in group.tests"
+              :key="tc.id"
+              class="rounded-xl border border-gray-200 bg-white p-3 text-left shadow-sm active:bg-gray-50"
+              @click="tc.fn()">
+              <div class="text-sm font-medium">{{ tc.label }}</div>
+              <div class="mt-0.5 text-xs text-gray-500">{{ tc.desc }}</div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toasts -->
+      <section class="mb-10">
+        <div class="mb-4 border-l-4 border-green-500 pl-3">
+          <h2 class="text-lg font-bold text-gray-900">Toasts</h2>
+          <p class="text-sm text-gray-500">
+            Benachrichtigungen in allen 4 Ecken. Ersetzt Ionic toastController +
+            CommandBus.
+          </p>
+        </div>
+
+        <div
+          v-for="group in toastGroups"
+          :key="group.section"
+          class="mb-5">
+          <h3
+            class="mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">
+            {{ group.section }}
+          </h3>
+          <div class="grid gap-2" :class="group.grid ?? 'grid-cols-1'">
+            <button
+              v-for="tc in group.tests"
+              :key="tc.id"
+              class="rounded-xl border border-gray-200 bg-white p-3 text-left shadow-sm active:bg-gray-50"
+              @click="tc.fn()">
+              <div class="text-sm font-medium">{{ tc.label }}</div>
+              <div class="mt-0.5 text-xs text-gray-500">{{ tc.desc }}</div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- DatePicker -->
+      <section class="mb-10">
+        <div class="mb-4 border-l-4 border-purple-500 pl-3">
+          <h2 class="text-lg font-bold text-gray-900">DatePicker</h2>
+          <p class="text-sm text-gray-500">
+            Datum- und Zeitraum-Auswahl mit Kalender. Lokalisierung, Min/Max,
+            deaktivierte Tage.
+          </p>
+        </div>
         <DatePickerDemo />
-      </div>
+      </section>
 
-      <div
-        v-if="dismissLog.length"
-        class="mt-6 rounded-lg bg-gray-100 p-3">
-        <p class="mb-1 text-xs font-semibold text-gray-500">Dismiss Log</p>
-        <p
-          v-for="(log, i) in dismissLog"
-          :key="i"
-          class="text-xs text-gray-600">
-          {{ log }}
-        </p>
-      </div>
-
-      <div
-        v-if="lastResult"
-        class="mt-6 rounded-lg bg-green-50 p-3">
-        <p class="text-sm font-medium text-green-800">Last result:</p>
-        <p class="mt-1 text-sm break-all text-green-700">
-          {{ lastResult }}
-        </p>
-      </div>
     </div>
 
     <DrawerRoot
@@ -139,9 +166,7 @@
   import ToastContainer from './demos/toast/ToastContainer.vue';
   import { useToast, type ToastPosition } from './demos/toast/useToast';
 
-  const lastResult = ref('');
   const toast = useToast();
-  const dismissLog = ref<string[]>([]);
   const drawerOpen = ref(false);
 
   const positions: ToastPosition[] = [
@@ -151,25 +176,18 @@
     'bottom-right'
   ];
 
-  function logDismiss(label: string) {
-    dismissLog.value.unshift(`${new Date().toLocaleTimeString()}: ${label}`);
-    if (dismissLog.value.length > 10) dismissLog.value.pop();
-  }
-
   async function openModal(
     options: Parameters<typeof showModal>[0],
     label?: string
   ) {
     const result = await showModal(options);
-    logDismiss(
-      `${label ?? 'Modal'} → role: ${result.role}, data: ${JSON.stringify(result.data)}`
-    );
-    lastResult.value = `role: ${result.role}, data: ${JSON.stringify(result.data)}`;
+    console.log(`[Modal] ${label ?? 'Modal'}`, result);
   }
 
-  const demoGroups = [
+  const modalGroups = [
     {
-      section: 'Responsive Modal — Sizes',
+      section: 'Größen',
+      grid: 'grid-cols-3',
       tests: (['small', 'medium', 'large'] satisfies ModalSize[]).map(size => ({
         id: `m-size-${size}`,
         label: `${size} (${{ small: '438px', medium: '672px', large: '1140px' }[size]})`,
@@ -188,7 +206,7 @@
       }))
     },
     {
-      section: 'Responsive Modal — Dismiss Control',
+      section: 'Dismiss-Kontrolle',
       tests: [
         {
           id: 'm-persistent',
@@ -236,7 +254,7 @@
       ]
     },
     {
-      section: 'Responsive Modal — Features',
+      section: 'Features',
       tests: [
         {
           id: 'm-form-result',
@@ -302,15 +320,15 @@
                 size: 'medium',
                 onPresent: () => {
                   console.log('onPresent fired');
-                  logDismiss('onPresent fired');
+                  console.log('[Modal] onPresent');
                 },
                 onWillDismiss: () => {
                   console.log('onWillDismiss fired');
-                  logDismiss('onWillDismiss fired');
+                  console.log('[Modal] onWillDismiss');
                 },
                 onDidDismiss: () => {
                   console.log('onDidDismiss fired');
-                  logDismiss('onDidDismiss fired');
+                  console.log('[Modal] onDidDismiss');
                 }
               },
               'Lifecycle'
@@ -352,7 +370,7 @@
       ]
     },
     {
-      section: 'Weitere Modal-Demos',
+      section: 'Realistische Beispiele',
       tests: [
         {
           id: 'm-longform',
@@ -410,9 +428,13 @@
             )
         }
       ]
-    },
+    }
+  ];
+
+  const toastGroups = [
     {
-      section: 'Toast — Types',
+      section: 'Typen',
+      grid: 'grid-cols-2',
       tests: [
         {
           id: 't-success',
@@ -444,7 +466,8 @@
       ]
     },
     {
-      section: 'Toast — Positions',
+      section: 'Positionen',
+      grid: 'grid-cols-2',
       tests: positions.map(pos => ({
         id: `t-pos-${pos}`,
         label: pos,
@@ -453,7 +476,7 @@
       }))
     },
     {
-      section: 'Toast — Features',
+      section: 'Features',
       tests: [
         {
           id: 't-title',
@@ -487,7 +510,7 @@
           desc: 'Callback when dismissed',
           fn: () =>
             toast.info('Dismiss me and check the log below.', {
-              onDismiss: () => logDismiss('onDismiss toast')
+              onDismiss: () => console.log('[Toast] onDismiss')
             })
         },
         {
@@ -509,7 +532,7 @@
       ]
     },
     {
-      section: 'Toast — Multi-Position & Layering',
+      section: 'Layering',
       tests: [
         {
           id: 't-4corners',

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1 flex-col overflow-hidden">
     <div
-      class="flex shrink-0 items-start px-4 pt-3 pb-2 transition-shadow duration-150"
+      class="relative z-10 flex shrink-0 items-start px-4 pt-3 pb-2 transition-shadow duration-150"
       :class="isScrolled ? 'shadow-md' : ''">
       <div class="min-w-0 flex-1">
         <slot name="header" />

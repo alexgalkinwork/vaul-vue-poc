@@ -1,9 +1,4 @@
-import {
-  type Component,
-  type InjectionKey,
-  markRaw,
-  shallowRef
-} from 'vue';
+import { type Component, type InjectionKey, markRaw, shallowRef } from 'vue';
 import { TRANSITIONS } from '../../lib/vaul-vue/constants';
 
 export type DismissReason =
@@ -90,14 +85,17 @@ export function dismissInstance(
 function showModal<T = unknown>(
   options: ModalOptions
 ): Promise<ModalResult<T>> {
-  const { promise, resolve } = Promise.withResolvers<ModalResult<T>>();
+  let resolve: (result: ModalResult<T>) => void;
+  const promise = new Promise<ModalResult<T>>(r => {
+    resolve = r;
+  });
 
   stack.value = [
     ...stack.value,
     {
       id: ++counter,
       options: { ...options, component: markRaw(options.component) },
-      complete: resolve as ModalInstance['complete'],
+      complete: resolve! as ModalInstance['complete'],
       isDesktop: window.innerWidth >= 1200
     }
   ];

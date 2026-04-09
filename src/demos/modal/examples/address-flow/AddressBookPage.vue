@@ -4,16 +4,19 @@
       Gespeicherte Adressen — wähle eine oder erstelle eine neue.
     </p>
 
-    <button
+    <div
       v-for="(addr, i) in savedAddresses"
       :key="i"
-      class="flex w-full items-center gap-3 rounded-lg border p-3 text-left"
+      role="button"
+      tabindex="0"
+      class="flex w-full cursor-pointer items-center gap-3 rounded-lg border p-3 text-left"
       :class="
         isSelected(addr)
           ? 'border-blue-500 bg-blue-50'
           : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
       "
-      @click="selectAddress(addr)">
+      @click="selectAddress(addr)"
+      @keydown.enter="selectAddress(addr)">
       <div
         class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
         :class="
@@ -45,7 +48,7 @@
         @click.stop="editAddress(addr)">
         Bearbeiten
       </button>
-    </button>
+    </div>
 
     <button
       class="w-full rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
@@ -58,21 +61,16 @@
 <script setup lang="ts">
   import { inject } from 'vue';
   import { useNavStack } from '../../useNavStack';
-  import {
-    ADDRESS_KEY,
-    savedAddresses,
-    type Address
-  } from './addressState';
   import AddressEditPage from './AddressEditPage.vue';
   import AddressSearchPage from './AddressSearchPage.vue';
+  import { ADDRESS_KEY, savedAddresses, type Address } from './addressState';
 
   const nav = useNavStack();
   const address = inject(ADDRESS_KEY)!;
 
   function isSelected(addr: Address) {
     return (
-      address.value.street === addr.street &&
-      address.value.city === addr.city
+      address.value.street === addr.street && address.value.city === addr.city
     );
   }
 

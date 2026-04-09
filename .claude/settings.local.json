@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prettier:*)",
+      "Bash(ls /Users/alexgalkin/pocs/vaul-vue-poc/.prettierrc* /Users/alexgalkin/pocs/vaul-vue-poc/prettier.config.*)",
+      "Bash(npm install:*)",
+      "Bash(grep -E \"\\\\.d\\\\.ts$|\\\\.ts$\")",
+      "WebFetch(domain:www.shadcn-vue.com)",
+      "Bash(gh api:*)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/unovue/reka-ui/refs/heads/main/docs/.vitepress/theme/components/demo/DatePicker/tailwind/index.vue\")",
+      "Bash(curl -sL \"https://api.github.com/search/code?q=DatePickerCellTrigger+repo:unovue/reka-ui+extension:vue&per_page=5\")",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''path'''']\\) for item in data.get\\(''''items'''',[]\\)]\")",
+      "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app -name index.html -o -name *.html)",
+      "Bash(find /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp -name tailwind.config.* -o -name index.html)",
+      "Bash(grep -r \"addEventListener.*gesture\\\\|addEventListener.*touchstart\\\\|addEventListener.*wheel\\\\|addEventListener.*dblclick\" /Users/alexgalkin/fe-repos/webshop-b2c-app/WebShopCore/ClientApp/src --include=*.ts --include=*.js --include=*.vue)",
+      "Bash(npm show:*)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/unovue/vaul-vue/main/packages/vaul-vue/src/usePositionFixed.ts\")",
+      "Bash(mkdir -p /Users/alexgalkin/pocs/vaul-vue-poc/src/demos/modal/vaul-vue-src)",
+      "Bash(for f:*)",
+      "Bash(do curl:*)",
+      "Bash(echo \"OK: $f\")",
+      "Bash(echo \"FAIL: $f\")",
+      "Bash(done)",
+      "Bash(wc -l /Users/alexgalkin/pocs/vaul-vue-poc/src/demos/modal/vaul-vue-src/*)",
+      "Bash(do sed:*)",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:ionic.io)",
+      "WebFetch(domain:m3.material.io)"
+    ]
+  }
+}

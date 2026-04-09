@@ -1,5 +1,6 @@
 import {
   type Component,
+  type ComputedRef,
   type InjectionKey,
   type ShallowRef,
   computed,
@@ -16,9 +17,9 @@ export interface NavEntry {
 
 export interface NavStack {
   stack: Readonly<ShallowRef<NavEntry[]>>;
-  activeEntry: ReturnType<typeof computed<NavEntry>>;
-  canGoBack: ReturnType<typeof computed<boolean>>;
-  currentTitle: ReturnType<typeof computed<string>>;
+  activeEntry: ComputedRef<NavEntry>;
+  canGoBack: ComputedRef<boolean>;
+  currentTitle: ComputedRef<string>;
   direction: ShallowRef<'forward' | 'back'>;
   push: (
     component: Component,

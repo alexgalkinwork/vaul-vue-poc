@@ -91,7 +91,7 @@
   const rangeValue = ref<DateRange>();
   const constrainedRange = ref<DateRange>();
   const validatedDate = ref<DateValue>();
-  const disabledDate = ref<DateValue>(new CalendarDate(2026, 3, 15));
+  const disabledDate = ref(new CalendarDate(2026, 3, 15));
 
   const externalError = computed(() => {
     if (!validatedDate.value) return undefined;

@@ -190,6 +190,10 @@
 
     <ResponsiveModal />
     <ToastContainer />
+
+    <p class="py-6 text-center text-[11px] tabular-nums text-gray-300">
+      build {{ buildStamp }}
+    </p>
   </div>
 </template>
 
@@ -268,6 +272,9 @@
       ]);
     },
   });
+
+  declare const __BUILD_STAMP__: string;
+  const buildStamp = __BUILD_STAMP__;
 
   const toast = useToast();
   const drawerOpen = ref(false);

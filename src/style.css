@@ -9,10 +9,10 @@ body {
   overscroll-behavior: none;
 }
 
-html.drawer-open body {
-  position: fixed;
-  width: 100%;
-  overflow-y: scroll;
+html.drawer-open [vaul-drawer-wrapper] {
+  overflow: hidden !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
 }
 
 

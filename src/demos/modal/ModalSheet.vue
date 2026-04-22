@@ -2,6 +2,7 @@
   <DrawerRoot
     :open="isOpen"
     :dismissible="swipeable"
+    :no-body-styles="true"
     @update:open="onOpenChange"
     @animation-end="onAnimationEnd">
     <DrawerPortal>
@@ -54,16 +55,11 @@
 
   provide(MODAL_DISMISSIBLE_KEY, instance.options.dismissible ?? true);
 
-  let savedScrollY = 0;
   onMounted(() => {
-    savedScrollY = window.scrollY;
-    document.body.style.top = `-${savedScrollY}px`;
     document.documentElement.classList.add('drawer-open');
   });
   onUnmounted(() => {
     document.documentElement.classList.remove('drawer-open');
-    document.body.style.top = '';
-    window.scrollTo(0, savedScrollY);
   });
 
   const swipeable = computed(

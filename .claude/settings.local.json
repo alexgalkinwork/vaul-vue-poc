@@ -25,7 +25,10 @@
       "Bash(do sed:*)",
       "WebFetch(domain:motion.dev)",
       "WebFetch(domain:ionic.io)",
-      "WebFetch(domain:m3.material.io)"
+      "WebFetch(domain:m3.material.io)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.codestudy.net)"
     ]
   }
 }

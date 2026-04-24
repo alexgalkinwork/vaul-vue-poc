@@ -54,16 +54,15 @@
 
   provide(MODAL_DISMISSIBLE_KEY, instance.options.dismissible ?? true);
 
-  let savedScrollY = 0;
   onMounted(() => {
-    savedScrollY = window.scrollY;
-    document.body.style.top = `-${savedScrollY}px`;
     document.documentElement.classList.add('drawer-open');
   });
   onUnmounted(() => {
-    document.documentElement.classList.remove('drawer-open');
-    document.body.style.top = '';
-    window.scrollTo(0, savedScrollY);
+    setTimeout(() => {
+      if (!document.querySelector('[data-vaul-drawer]')) {
+        document.documentElement.classList.remove('drawer-open');
+      }
+    }, 500);
   });
 
   const swipeable = computed(

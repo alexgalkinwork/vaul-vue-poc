@@ -1,6 +1,6 @@
 <template>
   <div
-    vaul-drawer-wrapper
+    id="app-root"
     class="min-h-dvh touch-manipulation bg-gray-50 select-none">
     <!-- Header -->
     <div class="sticky top-0 z-30 px-3 pt-3 lg:px-5 lg:pt-4">

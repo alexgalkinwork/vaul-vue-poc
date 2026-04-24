@@ -143,7 +143,7 @@ const result = await showModal({
 ```vue
 <!-- App.vue -->
 <template>
-  <div vaul-drawer-wrapper>
+  <div id="app-root">
     <router-view />
     <ResponsiveModal />
     <ToastContainer />
@@ -151,7 +151,7 @@ const result = await showModal({
 </template>
 ```
 
-`vaul-drawer-wrapper` ist ein Attribut das vaul-vue für die Background-Scaling-Animation braucht.
+`id="app-root"` wird für den Scroll-Lock beim Sheet-Öffnen gebraucht.
 
 ---
 
@@ -513,7 +513,7 @@ npm install reka-ui
 
 ```vue
 <template>
-  <div vaul-drawer-wrapper>
+  <div id="app-root">
     <router-view />
     <ResponsiveModal />
     <ToastContainer />

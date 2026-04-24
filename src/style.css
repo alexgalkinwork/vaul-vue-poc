@@ -9,7 +9,7 @@ body {
   overscroll-behavior: none;
 }
 
-html.drawer-open [vaul-drawer-wrapper] {
+html.drawer-open #app-root {
   overflow: hidden !important;
   touch-action: none !important;
   overscroll-behavior: none !important;

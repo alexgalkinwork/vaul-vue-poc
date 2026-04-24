@@ -25,7 +25,25 @@
       "Bash(do sed:*)",
       "WebFetch(domain:motion.dev)",
       "WebFetch(domain:ionic.io)",
-      "WebFetch(domain:m3.material.io)"
+      "WebFetch(domain:m3.material.io)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Bash(gh auth:*)",
+      "Bash(npm run:*)",
+      "Bash(npx gh-pages:*)",
+      "WebSearch",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/stripearmy/react-ios-scroll-lock/main/src/ios-scroll-lock.css\")",
+      "Bash(curl -sL \"https://api.github.com/repos/stripearmy/react-ios-scroll-lock/git/trees/main?recursive=1\")",
+      "Bash(curl -sL \"https://api.github.com/repos/stripearmy/react-ios-scroll-lock/contents/src\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/stripearmy/react-ios-scroll-lock/main/src/css/styles.css\")",
+      "Bash(npx vite:*)",
+      "WebFetch(domain:alexgalkinwork.github.io)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)"
     ]
   }
 }
